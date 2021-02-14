@@ -1,13 +1,19 @@
 package com.atanasvasil.api.mycardocs.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import com.atanasvasil.api.mycardocs.entities.UserEntity;
 import com.atanasvasil.api.mycardocs.requests.users.UserCreateRequest;
 import com.atanasvasil.api.mycardocs.repositories.UsersRepository;
+import com.atanasvasil.api.mycardocs.responses.users.UserGetResponse;
+import com.atanasvasil.api.mycardocs.utils.Identifier;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.atanasvasil.api.mycardocs.utils.Utils.getUserFromEntity;
+
 /**
- *
  * @author Atanas Yordanov Arshinkov
  * @since 1.0.0
  */
@@ -29,21 +36,45 @@ public class UsersController {
 
     @ApiOperation(value = "Get users")
     @GetMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserEntity> getUsers() {
+    public ResponseEntity<List<UserGetResponse>> getUsers() {
 
-        return usersRepository.findAll();
+        List<UserGetResponse> users = new ArrayList<>();
+
+        for (UserEntity user : usersRepository.findAll()) {
+            UserGetResponse ugr = getUserFromEntity(user);
+            users.add(ugr);
+        }
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get particular user")
-    @GetMapping(value = "/api/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserEntity getUser(@PathVariable("userId") Long userId) {
+    @GetMapping(value = "/api/users/{identifier}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserGetResponse> getUser(@PathVariable("identifier") String identifier) {
 
-        return usersRepository.findByUserId(userId);
+        UserEntity storedUser;
+
+        Identifier id = new Identifier();
+
+        if (id.isUserId(identifier)) {
+            Long userId = Long.parseLong(identifier);
+            storedUser = usersRepository.findByUserId(userId);
+        } else {
+            storedUser = usersRepository.findByEmail(identifier);
+        }
+
+        if (storedUser == null) {
+            return new ResponseEntity<>(new UserGetResponse(), HttpStatus.OK);
+        }
+
+        UserGetResponse ugr = getUserFromEntity(storedUser);
+
+        return new ResponseEntity<>(ugr, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create user")
     @PostMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserEntity createUser(@RequestBody UserCreateRequest ucr) {
+    public ResponseEntity<UserGetResponse> createUser(@RequestBody UserCreateRequest ucr) {
 
         UserEntity user = new UserEntity();
         user.setEmail(ucr.getEmail());
@@ -53,7 +84,9 @@ public class UsersController {
 
         UserEntity createdUser = usersRepository.save(user);
 
-        return createdUser;
+        UserGetResponse ugr = getUserFromEntity(createdUser);
+
+        return new ResponseEntity<>(ugr, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete user")
@@ -72,5 +105,12 @@ public class UsersController {
         }
 
         return true;
+    }
+
+    @ApiOperation(value = "Checks if the user with email exists")
+    @GetMapping(value = "/api/users/exists/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean isUserExistsByEmail(@PathVariable("email") String email) {
+
+        return usersRepository.existsByEmail(email);
     }
 }

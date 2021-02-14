@@ -10,9 +10,9 @@
     </parent>
     <groupId>com.atanasvasil.api</groupId>
     <artifactId>my-car-docs</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>war</packaging>
-    <name>MyCarDocs</name>
+    <name>MyCarDocsApi</name>
     <description>RESTful API for MyCarDocs application</description>
     
     <properties>
@@ -25,7 +25,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <buildDate>${maven.build.timestamp}</buildDate>
         <maven.build.timestamp.format>dd.MM.yyyy</maven.build.timestamp.format>
-        <warname>MyCarDocs</warname>
+        <warname>MyCarDocsApi</warname>
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
     </properties>
     
@@ -93,11 +93,104 @@
     </dependencies>
 
     <build>
-        <plugins>
+        <!--        <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-        </plugins>
+        </plugins>-->
+        <finalName>MyCarDocsApi##${project.version}</finalName>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+            <plugins>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm</artifactId>
+                            <version>7.2</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.2.0</version>
+          
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                        <archive>
+                            <manifestEntries>
+                                <Implementation-Version>${project.version}</Implementation-Version>
+                                <Implementation-Date>${buildDate}</Implementation-Date>
+                            </manifestEntries>
+                        </archive>
+          
+                        <!--          <webResources>
+                          <webResource>
+                            <directory>src/main/resources/mail</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                              <include>META-INF/MANIFEST.MF</include>
+                              <include>META-INF/context.xml</include>
+                              <include>WEB-INF/web.xml</include>
+                            </includes>
+                          </webResource>
+                        </webResources>-->
+
+                        <warName>${warname}##${project.version}</warName>
+                        <!--<warName>${warname}-${build.profile}</warName>-->
+                        <!--<warName>${warname}-v${project.version}</warName>-->
+            
+                        <!-- ZA ROOT NA SURVER-A -->
+                        <!--<warName>ROOT##${project.version}</warName>-->
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>2.1.0</version>
+                    <executions>
+                        <execution>
+                            <id>generate-docs</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>process-asciidoc</goal>
+                            </goals>
+                            <configuration>
+                                <backend>html</backend>
+                                <doctype>book</doctype>
+                                <attributes>
+                                    <snippets>${snippetsDirectory}</snippets>
+                                </attributes>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>
