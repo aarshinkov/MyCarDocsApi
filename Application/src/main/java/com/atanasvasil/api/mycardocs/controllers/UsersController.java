@@ -91,20 +91,19 @@ public class UsersController {
 
     @ApiOperation(value = "Delete user")
     @DeleteMapping(value = "/api/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean deleteUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("userId") Long userId) {
         UserEntity user = usersRepository.findByUserId(userId);
 
         if (user == null) {
-            return false;
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
         }
 
         try {
             usersRepository.delete(user);
+            return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
         } catch (Exception e) {
-            return false;
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
         }
-
-        return true;
     }
 
     @ApiOperation(value = "Checks if the user with email exists")
