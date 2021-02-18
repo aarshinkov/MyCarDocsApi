@@ -14,3 +14,16 @@ CREATE TABLE IF NOT EXISTS users(
 	last_name varchar(50) not null,
 	edited_on timestamp
 );
+
+CREATE TABLE IF NOT EXISTS cars(
+	car_id varchar(200) not null primary key,
+	brand varchar(100) not null,
+	model varchar(100) not null,
+	color varchar(50) not null,
+	year int not null,
+	license_plate varchar(12) not null,
+	alias varchar(100),
+	owner int not null references users(user_id) on update cascade on delete cascade,
+	added_on timestamp not null default NOW(),
+	edited_on timestamp
+);
