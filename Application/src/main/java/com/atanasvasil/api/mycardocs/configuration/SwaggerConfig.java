@@ -38,7 +38,7 @@ public class SwaggerConfig {
                 .contact(new Contact("Atanas Yordanov Arshinkov", "http://github.com/aarshinkov", "a.arshinkov97@gmail.com"))
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-                .version("1.1.1")
+                .version("1.2.1")
                 .build();
     }
 }
