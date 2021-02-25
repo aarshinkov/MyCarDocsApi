@@ -1,7 +1,6 @@
 package com.atanasvasil.api.mycardocs.controllers;
 
 import com.atanasvasil.api.mycardocs.entities.CarEntity;
-import com.atanasvasil.api.mycardocs.repositories.CarsRepository;
 import com.atanasvasil.api.mycardocs.requests.cars.CarCreateRequest;
 import com.atanasvasil.api.mycardocs.requests.cars.CarUpdateRequest;
 import com.atanasvasil.api.mycardocs.responses.cars.CarGetResponse;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -28,12 +26,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Atanas Yordanov Arshinkov
  * @since 1.0.0
  */
-@Controller
+@RestController
 @Api(value = "Cars", tags = "Cars")
 public class CarsController {
 
@@ -48,7 +47,7 @@ public class CarsController {
 
         List<CarEntity> storedCars = carService.getCars();
 
-        if (storedCars.size() == 0) {
+        if (storedCars.isEmpty()) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
         }
 
@@ -115,14 +114,14 @@ public class CarsController {
     }
 
     @ApiOperation(value = "Update car")
-    @PutMapping(value = "/api/cars/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/cars", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CarGetResponse> updateCar(@RequestBody CarUpdateRequest cur) {
 
         try {
             CarEntity updatedCar = carService.updateCar(cur);
 
             CarGetResponse cgr = getCarFromEntity(updatedCar);
-            
+
             return new ResponseEntity<>(cgr, HttpStatus.OK);
 
         } catch (Exception e) {
@@ -134,14 +133,8 @@ public class CarsController {
     @DeleteMapping(value = "/api/cars/{carId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> deleteCar(@PathVariable("carId") String carId) {
 
-        CarEntity car = carService.getCarByCarId(carId);
-
-        if (car == null) {
-            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
-        }
-
         try {
-            carService.deleteCar(car);
+            carService.deleteCar(carId);
             return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);

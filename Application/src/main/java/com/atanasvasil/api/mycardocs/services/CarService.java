@@ -22,5 +22,5 @@ public interface CarService {
 
     CarEntity updateCar(CarUpdateRequest cur) throws Exception;
 
-    void deleteCar(CarEntity car) throws Exception;
+    void deleteCar(String carId) throws Exception;
 }

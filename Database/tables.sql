@@ -27,3 +27,13 @@ CREATE TABLE IF NOT EXISTS cars(
 	added_on timestamp not null default NOW(),
 	edited_on timestamp
 );
+
+CREATE TABLE IF NOT EXISTS policies(
+	policy_id varchar(200) not null primary key,
+	number varchar(100) not null,
+	type int not null,
+	ins_name varchar(100) not null,
+	car_id varchar(200) not null references cars(car_id) on update cascade on delete cascade,
+	start_date timestamp not null,
+	end_date timestamp not null
+);

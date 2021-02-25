@@ -87,7 +87,14 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void deleteCar(CarEntity car) throws Exception {
+    public void deleteCar(String carId) throws Exception {
+
+        CarEntity car = carsRepository.findByCarId(carId);
+
+        if (car == null) {
+            throw new Exception("Car does not exist");
+        }
+
         carsRepository.delete(car);
     }
 }

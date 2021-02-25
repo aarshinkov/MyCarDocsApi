@@ -1,9 +1,14 @@
 package com.atanasvasil.api.mycardocs.utils;
 
 import com.atanasvasil.api.mycardocs.entities.CarEntity;
+import com.atanasvasil.api.mycardocs.entities.PolicyEntity;
 import com.atanasvasil.api.mycardocs.entities.UserEntity;
 import com.atanasvasil.api.mycardocs.responses.cars.CarGetResponse;
+import com.atanasvasil.api.mycardocs.responses.policies.PolicyGetResponse;
 import com.atanasvasil.api.mycardocs.responses.users.UserGetResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
@@ -35,5 +40,33 @@ public class Utils {
         cgr.setEditedOn(car.getEditedOn());
 
         return cgr;
+    }
+
+    public static List<PolicyGetResponse> getPoliciesFromEntities(List<PolicyEntity> storedPolicies) {
+
+        List<PolicyGetResponse> policies = new ArrayList<>();
+
+        for (PolicyEntity policy : storedPolicies) {
+            PolicyGetResponse pgr = getPolicyFromEntity(policy);
+            policies.add(pgr);
+        }
+
+        return policies;
+    }
+
+    public static PolicyGetResponse getPolicyFromEntity(PolicyEntity policy) {
+        PolicyGetResponse pgr = new PolicyGetResponse();
+
+        pgr.setPolicyId(policy.getPolicyId());
+        pgr.setNumber(policy.getNumber());
+        pgr.setType(policy.getType());
+        pgr.setInsName(policy.getInsName());
+
+        pgr.setCar(getCarFromEntity(policy.getCar()));
+
+        pgr.setStartDate(policy.getStartDate());
+        pgr.setEndDate(policy.getEndDate());
+
+        return pgr;
     }
 }
