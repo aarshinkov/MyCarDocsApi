@@ -100,6 +100,10 @@ public class CarsController {
     @PostMapping(value = "/api/cars", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CarGetResponse> createCar(@RequestBody CarCreateRequest ccr) {
 
+        if (ccr.getAlias().trim().replaceAll("\\s+", "").isEmpty()) {
+            ccr.setAlias(null);
+        }
+
         try {
             CarEntity createdCar = carService.createCar(ccr);
 

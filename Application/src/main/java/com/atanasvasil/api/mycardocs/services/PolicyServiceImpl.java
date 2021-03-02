@@ -2,10 +2,8 @@ package com.atanasvasil.api.mycardocs.services;
 
 import com.atanasvasil.api.mycardocs.entities.CarEntity;
 import com.atanasvasil.api.mycardocs.entities.PolicyEntity;
-import com.atanasvasil.api.mycardocs.entities.UserEntity;
 import com.atanasvasil.api.mycardocs.repositories.CarsRepository;
 import com.atanasvasil.api.mycardocs.repositories.PoliciesRepository;
-import com.atanasvasil.api.mycardocs.requests.cars.CarUpdateRequest;
 import com.atanasvasil.api.mycardocs.requests.policies.PolicyCreateRequest;
 import com.atanasvasil.api.mycardocs.requests.policies.PolicyUpdateRequest;
 import org.slf4j.Logger;
@@ -49,7 +47,7 @@ public class PolicyServiceImpl implements PolicyService {
 
     @Override
     public List<PolicyEntity> getPoliciesByUserId(Long userId) {
-        return policiesRepository.findAllByCarOwnerUserId(userId);
+        return policiesRepository.findAllByCarOwnerUserIdOrderByStartDate(userId);
     }
 
     @Override

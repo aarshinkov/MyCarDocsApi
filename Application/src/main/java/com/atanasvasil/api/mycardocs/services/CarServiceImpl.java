@@ -6,6 +6,7 @@ import com.atanasvasil.api.mycardocs.repositories.CarsRepository;
 import com.atanasvasil.api.mycardocs.repositories.UsersRepository;
 import com.atanasvasil.api.mycardocs.requests.cars.CarCreateRequest;
 import com.atanasvasil.api.mycardocs.requests.cars.CarUpdateRequest;
+import java.sql.Timestamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,7 @@ public class CarServiceImpl implements CarService {
         car.setYear(cur.getYear());
         car.setLicensePlate(cur.getLicensePlate());
         car.setAlias(cur.getAlias());
+        car.setEditedOn(new Timestamp(System.currentTimeMillis()));
 
         return carsRepository.save(car);
     }
