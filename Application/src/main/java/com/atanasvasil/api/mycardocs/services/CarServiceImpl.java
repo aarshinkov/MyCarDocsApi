@@ -59,6 +59,8 @@ public class CarServiceImpl implements CarService {
         car.setBrand(ccr.getBrand());
         car.setModel(ccr.getModel());
         car.setColor(ccr.getColor());
+        car.setTransmission(ccr.getTransmission());
+        car.setPowerType(ccr.getPowerType());
         car.setYear(ccr.getYear());
         car.setLicensePlate(ccr.getLicensePlate());
         car.setAlias(ccr.getAlias());
@@ -80,6 +82,8 @@ public class CarServiceImpl implements CarService {
         car.setBrand(cur.getBrand());
         car.setModel(cur.getModel());
         car.setColor(cur.getColor());
+        car.setTransmission(cur.getTransmission());
+        car.setPowerType(cur.getPowerType());
         car.setYear(cur.getYear());
         car.setLicensePlate(cur.getLicensePlate());
         car.setAlias(cur.getAlias());

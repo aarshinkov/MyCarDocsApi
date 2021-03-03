@@ -29,6 +29,8 @@ public class Utils {
         cgr.setBrand(car.getBrand());
         cgr.setModel(car.getModel());
         cgr.setColor(car.getColor());
+        cgr.setTransmission(car.getTransmission());
+        cgr.setPowerType(car.getPowerType());
         cgr.setYear(car.getYear());
         cgr.setLicensePlate(car.getLicensePlate());
         cgr.setAlias(car.getAlias());

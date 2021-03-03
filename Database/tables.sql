@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS cars(
 	brand varchar(100) not null,
 	model varchar(100) not null,
 	color varchar(50) not null,
+	transmission int not null default 0,
+	power_type int not null,
 	year int not null,
 	license_plate varchar(12) not null,
 	alias varchar(100),

@@ -18,6 +18,8 @@ public class CarCreateRequest implements Serializable {
     private String brand;
     private String model;
     private String color;
+    private Integer transmission;
+    private Integer powerType;
     private Integer year;
     private String licensePlate;
     private String alias;

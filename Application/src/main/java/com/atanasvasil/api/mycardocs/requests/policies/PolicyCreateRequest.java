@@ -1,10 +1,8 @@
 package com.atanasvasil.api.mycardocs.requests.policies;
 
-import com.atanasvasil.api.mycardocs.responses.cars.CarGetResponse;
 import lombok.*;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**

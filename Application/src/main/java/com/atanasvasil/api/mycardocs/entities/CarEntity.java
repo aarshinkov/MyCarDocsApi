@@ -36,6 +36,12 @@ public class CarEntity implements Serializable {
     @Column(name = "color")
     private String color;
 
+    @Column(name = "transmission")
+    private Integer transmission;
+
+    @Column(name = "power_type")
+    private Integer powerType;
+
     @Column(name = "year")
     private Integer year;
 
