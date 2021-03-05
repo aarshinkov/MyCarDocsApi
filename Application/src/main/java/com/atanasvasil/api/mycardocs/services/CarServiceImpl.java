@@ -46,6 +46,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public CarEntity getCarByLicensePlate(String licensePlate) {
+        return carsRepository.findByLicensePlateContaining(licensePlate);
+    }
+
+    @Override
     public CarEntity createCar(CarCreateRequest ccr) throws Exception {
 
         UserEntity owner = usersRepository.findByUserId(ccr.getUserId());
@@ -102,5 +107,11 @@ public class CarServiceImpl implements CarService {
         }
 
         carsRepository.delete(car);
+    }
+
+    @Override
+    public Boolean hasUserCars(Long userId) {
+
+        return !getCarsByOwner(userId).isEmpty();
     }
 }

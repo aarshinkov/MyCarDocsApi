@@ -18,9 +18,13 @@ public interface CarService {
 
     CarEntity getCarByCarId(String carId);
 
+    CarEntity getCarByLicensePlate(String licensePlate);
+
     CarEntity createCar(CarCreateRequest ccr) throws Exception;
 
     CarEntity updateCar(CarUpdateRequest cur) throws Exception;
 
     void deleteCar(String carId) throws Exception;
+
+    Boolean hasUserCars(Long userId);
 }

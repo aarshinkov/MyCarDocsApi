@@ -21,6 +21,7 @@ public class PolicyUpdateRequest implements Serializable {
     private String number;
     private Integer type;
     private String insName;
+    private String carId;
     private Date startDate;
     private Date endDate;
 }

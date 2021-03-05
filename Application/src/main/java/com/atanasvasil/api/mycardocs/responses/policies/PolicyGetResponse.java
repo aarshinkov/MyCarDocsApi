@@ -1,6 +1,5 @@
 package com.atanasvasil.api.mycardocs.responses.policies;
 
-import com.atanasvasil.api.mycardocs.entities.CarEntity;
 import com.atanasvasil.api.mycardocs.responses.cars.CarGetResponse;
 import lombok.*;
 

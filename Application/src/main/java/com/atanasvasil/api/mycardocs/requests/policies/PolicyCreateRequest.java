@@ -1,5 +1,6 @@
 package com.atanasvasil.api.mycardocs.requests.policies;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.io.Serializable;

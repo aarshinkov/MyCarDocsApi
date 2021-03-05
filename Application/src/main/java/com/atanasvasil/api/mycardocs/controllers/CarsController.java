@@ -96,6 +96,21 @@ public class CarsController {
         return new ResponseEntity<>(cgr, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Get car by license plate")
+    @GetMapping(value = "/api/cars/license/{licensePlate}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CarGetResponse> getCarByLicensePlate(@PathVariable("licensePlate") String licensePlate) {
+
+        CarEntity car = carService.getCarByLicensePlate(licensePlate);
+
+        if (car == null) {
+            return new ResponseEntity<>(new CarGetResponse(), HttpStatus.BAD_REQUEST);
+        }
+
+        CarGetResponse cgr = getCarFromEntity(car);
+
+        return new ResponseEntity<>(cgr, HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Create car")
     @PostMapping(value = "/api/cars", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CarGetResponse> createCar(@RequestBody CarCreateRequest ccr) {

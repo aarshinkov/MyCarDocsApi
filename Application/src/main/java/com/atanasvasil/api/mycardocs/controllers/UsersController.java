@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.atanasvasil.api.mycardocs.entities.UserEntity;
+import com.atanasvasil.api.mycardocs.repositories.CarsRepository;
 import com.atanasvasil.api.mycardocs.requests.users.UserCreateRequest;
 import com.atanasvasil.api.mycardocs.repositories.UsersRepository;
 import com.atanasvasil.api.mycardocs.responses.users.UserGetResponse;
+import com.atanasvasil.api.mycardocs.services.CarService;
 import com.atanasvasil.api.mycardocs.utils.Identifier;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +35,9 @@ public class UsersController {
 
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    private CarService carService;
 
     @ApiOperation(value = "Get users")
     @GetMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -108,8 +113,15 @@ public class UsersController {
 
     @ApiOperation(value = "Checks if the user with email exists")
     @GetMapping(value = "/api/users/exists/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean isUserExistsByEmail(@PathVariable("email") String email) {
+    public ResponseEntity<Boolean> isUserExistsByEmail(@PathVariable("email") String email) {
 
-        return usersRepository.existsByEmail(email);
+        return new ResponseEntity(usersRepository.existsByEmail(email), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Has user cars")
+    @GetMapping(value = "/api/users/{userId}/has/cars", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> hasUserCars(@PathVariable("userId") Long userId) {
+
+        return new ResponseEntity(carService.hasUserCars(userId), HttpStatus.OK);
     }
 }

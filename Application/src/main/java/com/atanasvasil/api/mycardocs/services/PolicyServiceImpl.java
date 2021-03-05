@@ -80,6 +80,7 @@ public class PolicyServiceImpl implements PolicyService {
     public PolicyEntity updatePolicy(PolicyUpdateRequest pur) throws Exception {
 
         PolicyEntity policy = policiesRepository.findByPolicyId(pur.getPolicyId());
+        CarEntity car = carsRepository.findByCarId(pur.getCarId());
 
         if (policy == null) {
             throw new Exception("Policy does not exist");
@@ -89,6 +90,7 @@ public class PolicyServiceImpl implements PolicyService {
         policy.setNumber(pur.getNumber());
         policy.setType(pur.getType());
         policy.setInsName(pur.getInsName());
+        policy.setCar(car);
         policy.setStartDate(new Timestamp(pur.getStartDate().getTime()));
         policy.setEndDate(new Timestamp(pur.getEndDate().getTime()));
 
