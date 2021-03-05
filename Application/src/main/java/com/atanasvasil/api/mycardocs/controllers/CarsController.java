@@ -159,4 +159,13 @@ public class CarsController {
             return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
         }
     }
+
+    @ApiOperation(value = "Get cars count for user")
+    @GetMapping(value = "/api/cars/count/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> getCarsCountByUserId(@PathVariable("userId") Long userId) {
+
+        Long carsCount = carService.getCarsCountByUserId(userId);
+
+        return new ResponseEntity(carsCount, HttpStatus.OK);
+    }
 }

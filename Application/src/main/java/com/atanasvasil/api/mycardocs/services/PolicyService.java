@@ -27,4 +27,6 @@ public interface PolicyService {
     PolicyEntity updatePolicy(PolicyUpdateRequest pur) throws Exception;
 
     void deletePolicy(String policyId) throws Exception;
+    
+    Long getPoliciesCountByUserId(Long userId);
 }

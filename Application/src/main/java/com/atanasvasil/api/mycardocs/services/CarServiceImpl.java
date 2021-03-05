@@ -114,4 +114,10 @@ public class CarServiceImpl implements CarService {
 
         return !getCarsByOwner(userId).isEmpty();
     }
+
+    @Override
+    public Long getCarsCountByUserId(Long userId) {
+        
+        return carsRepository.countByOwnerUserId(userId);
+    }
 }

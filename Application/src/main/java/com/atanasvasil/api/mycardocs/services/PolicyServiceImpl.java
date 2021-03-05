@@ -108,4 +108,10 @@ public class PolicyServiceImpl implements PolicyService {
 
         policiesRepository.delete(policy);
     }
+
+    @Override
+    public Long getPoliciesCountByUserId(Long userId) {
+        
+        return policiesRepository.countByCarOwnerUserId(userId);
+    }
 }

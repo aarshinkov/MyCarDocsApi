@@ -27,4 +27,6 @@ public interface CarService {
     void deleteCar(String carId) throws Exception;
 
     Boolean hasUserCars(Long userId);
+    
+    Long getCarsCountByUserId(Long userId);
 }

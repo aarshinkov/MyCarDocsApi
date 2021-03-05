@@ -26,4 +26,6 @@ public interface CarsRepository extends JpaRepository<CarEntity, String> {
     CarEntity findByOwnerUserId(Long userId);
 
     List<CarEntity> findAllByOwnerUserId(Long userId);
+    
+    Long countByOwnerUserId(Long userId);
 }

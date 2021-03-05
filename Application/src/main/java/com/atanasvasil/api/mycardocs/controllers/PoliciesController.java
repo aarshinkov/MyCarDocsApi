@@ -160,4 +160,13 @@ public class PoliciesController {
             return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
         }
     }
+
+    @ApiOperation(value = "Get policies count for user")
+    @GetMapping(value = "/api/policies/count/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> getPoliciesCountByUserId(@PathVariable("userId") Long userId) {
+
+        Long policiesCount = policyService.getPoliciesCountByUserId(userId);
+        
+        return new ResponseEntity(policiesCount, HttpStatus.OK);
+    }
 }
