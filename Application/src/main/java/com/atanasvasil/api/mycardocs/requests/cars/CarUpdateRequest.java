@@ -17,8 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CarUpdateRequest {
-
-    private String carId;
+    
     private String brand;
     private String model;
     private String color;
@@ -27,4 +26,5 @@ public class CarUpdateRequest {
     private Integer year;
     private String licensePlate;
     private String alias;
+    private String userId;
 }

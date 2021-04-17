@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.atanasvasil.api.mycardocs.utils.Utils.getCarFromEntity;
+import java.security.Principal;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 
@@ -62,8 +64,9 @@ public class CarsController {
     }
 
     @ApiOperation(value = "Get user cars")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId)")
     @GetMapping(value = "/api/cars/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CarGetResponse>> getUserCars(@PathVariable("userId") Long userId) {
+    public ResponseEntity<List<CarGetResponse>> getUserCars(@PathVariable("userId") String userId, Principal principal) {
 
         List<CarEntity> storedUserCars = carService.getCarsByOwner(userId);
 
@@ -82,8 +85,9 @@ public class CarsController {
     }
 
     @ApiOperation(value = "Get particular car")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfCar(#principal, #carId)")
     @GetMapping(value = "/api/cars/{carId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CarGetResponse> getCar(@PathVariable("carId") String carId) {
+    public ResponseEntity<CarGetResponse> getCar(@PathVariable("carId") String carId, Principal principal) {
 
         CarEntity car = carService.getCarByCarId(carId);
 
@@ -97,8 +101,9 @@ public class CarsController {
     }
 
     @ApiOperation(value = "Get car by license plate")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfCarWithLicensePlate(#principal, #licensePlate)")
     @GetMapping(value = "/api/cars/license/{licensePlate}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CarGetResponse> getCarByLicensePlate(@PathVariable("licensePlate") String licensePlate) {
+    public ResponseEntity<CarGetResponse> getCarByLicensePlate(@PathVariable("licensePlate") String licensePlate, Principal principal) {
 
         CarEntity car = carService.getCarByLicensePlate(licensePlate);
 
@@ -112,8 +117,9 @@ public class CarsController {
     }
 
     @ApiOperation(value = "Create car")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #ccr.userId)")
     @PostMapping(value = "/api/cars", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CarGetResponse> createCar(@RequestBody CarCreateRequest ccr) {
+    public ResponseEntity<CarGetResponse> createCar(@RequestBody CarCreateRequest ccr, Principal principal) {
 
         if (ccr.getAlias().trim().replaceAll("\\s+", "").isEmpty()) {
             ccr.setAlias(null);
@@ -133,11 +139,12 @@ public class CarsController {
     }
 
     @ApiOperation(value = "Update car")
-    @PutMapping(value = "/api/cars", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CarGetResponse> updateCar(@RequestBody CarUpdateRequest cur) {
+    @PreAuthorize("@securityExpressions.isUserOwnerOfCar(#principal, #carId) and @securityExpressions.isUserSelf(#principal, #cur.userId)")
+    @PutMapping(value = "/api/cars/{carId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CarGetResponse> updateCar(@PathVariable("carId") String carId, @RequestBody CarUpdateRequest cur, Principal principal) {
 
         try {
-            CarEntity updatedCar = carService.updateCar(cur);
+            CarEntity updatedCar = carService.updateCar(carId, cur);
 
             CarGetResponse cgr = getCarFromEntity(updatedCar);
 
@@ -149,8 +156,9 @@ public class CarsController {
     }
 
     @ApiOperation(value = "Delete car")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfCar(#principal, #carId)")
     @DeleteMapping(value = "/api/cars/{carId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> deleteCar(@PathVariable("carId") String carId) {
+    public ResponseEntity<Boolean> deleteCar(@PathVariable("carId") String carId, Principal principal) {
 
         try {
             carService.deleteCar(carId);
@@ -161,8 +169,9 @@ public class CarsController {
     }
 
     @ApiOperation(value = "Get cars count for user")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId)")
     @GetMapping(value = "/api/cars/count/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> getCarsCountByUserId(@PathVariable("userId") Long userId) {
+    public ResponseEntity<Long> getCarsCountByUserId(@PathVariable("userId") String userId, Principal principal) {
 
         Long carsCount = carService.getCarsCountByUserId(userId);
 

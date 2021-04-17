@@ -1,8 +1,6 @@
 package com.atanasvasil.api.mycardocs.responses.users;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,13 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserGetResponse implements Serializable {
+public class RoleGetResponse implements Serializable {
 
-    private String userId;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private Timestamp createdOn;
-    private Timestamp editedOn;
-    private List<RoleGetResponse> roles;
+    private String role;
 }

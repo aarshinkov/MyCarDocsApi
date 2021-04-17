@@ -46,7 +46,7 @@ public class PolicyServiceImpl implements PolicyService {
     }
 
     @Override
-    public List<PolicyEntity> getPoliciesByUserId(Long userId) {
+    public List<PolicyEntity> getPoliciesByUserId(String userId) {
         return policiesRepository.findAllByCarOwnerUserIdOrderByStartDate(userId);
     }
 
@@ -110,7 +110,7 @@ public class PolicyServiceImpl implements PolicyService {
     }
 
     @Override
-    public Long getPoliciesCountByUserId(Long userId) {
+    public Long getPoliciesCountByUserId(String userId) {
         
         return policiesRepository.countByCarOwnerUserId(userId);
     }

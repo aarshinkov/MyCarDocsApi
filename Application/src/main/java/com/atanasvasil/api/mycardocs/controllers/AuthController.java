@@ -1,8 +1,12 @@
 package com.atanasvasil.api.mycardocs.controllers;
 
-import com.atanasvasil.api.mycardocs.entities.UserEntity;
-import com.atanasvasil.api.mycardocs.repositories.UsersRepository;
+import com.atanasvasil.api.mycardocs.responses.*;
+import com.atanasvasil.api.mycardocs.entities.*;
+import com.atanasvasil.api.mycardocs.exceptions.*;
 import com.atanasvasil.api.mycardocs.responses.users.UserGetResponse;
+import com.atanasvasil.api.mycardocs.security.JwtUtil;
+import com.atanasvasil.api.mycardocs.services.UserService;
+import static com.atanasvasil.api.mycardocs.utils.Utils.getUserFromEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.atanasvasil.api.mycardocs.utils.Utils.getUserFromEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author Atanas Yordanov Arshinkov
@@ -28,22 +37,47 @@ public class AuthController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private UsersRepository usersRepository;
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserService userService;
 
     @ApiOperation(value = "Login")
     @PostMapping(value = "/api/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserGetResponse> login(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestParam("email") String email, @RequestParam("password") String password) {
 
-        UserEntity user = usersRepository.findByEmail(email);
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+            final UserDetails userDetails = userService.loadUserByUsername(email);
+            final String jwt = jwtUtil.generateToken(userDetails);
+            AuthenticationResponse response = new AuthenticationResponse();
+            response.setTokenType("Bearer");
+            response.setAccessToken(jwt);
 
-        if (user == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            List<String> authorities = new ArrayList<>();
+
+            userDetails.getAuthorities().forEach((authority) -> {
+                authorities.add(authority.getAuthority());
+            });
+
+            response.setAccess(authorities);
+
+            UserEntity storedUser = userService.getUserByEmail(email);
+
+            UserGetResponse user = getUserFromEntity(storedUser);
+
+            response.setUser(user);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (BadCredentialsException e) {
+            AuthException authException = new AuthException(1001, "Bad credentials", "The user entered wrong email or password");
+            log.debug("AuthException: " + authException);
+
+            throw authException;
         }
-
-        if (!password.equals(user.getPassword())) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(getUserFromEntity(user), HttpStatus.OK);
     }
 }

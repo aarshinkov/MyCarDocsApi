@@ -21,16 +21,14 @@ public class LogAspect {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Before("execution(* com.atanasvasil.api.mycardocs.controllers.*.*(..)) "
-            + "|| execution(* com.atanasvasil.api.mycardocs.services.*.*(..))")
+    @Before("execution(* com.atanasvasil.api.mycardocs.controllers.*.*(..))")
     public void methodBegin(JoinPoint joinPoint) {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         log.debug(className + " -> " + methodName + " begin --");
     }
 
-    @Around("execution(* com.atanasvasil.api.mycardocs.controllers.*.*(..)) "
-            + "|| execution(* com.atanasvasil.api.mycardocs.services.*.*(..))")
+    @Around("execution(* com.atanasvasil.api.mycardocs.controllers.*.*(..))")
     public Object logExecTime(ProceedingJoinPoint pjp) throws Throwable {
         String className = pjp.getTarget().getClass().getSimpleName();
         String methodName = pjp.getSignature().getName();

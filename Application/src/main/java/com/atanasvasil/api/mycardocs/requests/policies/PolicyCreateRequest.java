@@ -23,4 +23,5 @@ public class PolicyCreateRequest implements Serializable {
     private String carId;
     private Date startDate;
     private Date endDate;
+    private String userId;
 }

@@ -18,7 +18,7 @@ public interface PolicyService {
 
     List<PolicyEntity> getPoliciesByCarLicensePlate(String licensePlate);
 
-    List<PolicyEntity> getPoliciesByUserId(Long userId);
+    List<PolicyEntity> getPoliciesByUserId(String userId);
 
     PolicyEntity getPolicyByPolicyId(String policyId);
 
@@ -28,5 +28,5 @@ public interface PolicyService {
 
     void deletePolicy(String policyId) throws Exception;
     
-    Long getPoliciesCountByUserId(Long userId);
+    Long getPoliciesCountByUserId(String userId);
 }

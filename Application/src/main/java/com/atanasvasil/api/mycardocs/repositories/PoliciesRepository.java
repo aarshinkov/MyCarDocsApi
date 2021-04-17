@@ -21,7 +21,9 @@ public interface PoliciesRepository extends JpaRepository<PolicyEntity, String> 
 
     List<PolicyEntity> findAllByCarLicensePlateIgnoreCase(String licensePlate);
 
-    List<PolicyEntity> findAllByCarOwnerUserIdOrderByStartDate(Long userId);
+    List<PolicyEntity> findAllByCarOwnerUserIdOrderByStartDate(String userId);
 
-    Long countByCarOwnerUserId(Long userId);
+    Long countByCarOwnerUserId(String userId);
+    
+    List<PolicyEntity> findAllByCarOwnerEmail(String email);
 }

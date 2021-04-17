@@ -2,10 +2,11 @@ package com.atanasvasil.api.mycardocs.utils;
 
 import com.atanasvasil.api.mycardocs.entities.CarEntity;
 import com.atanasvasil.api.mycardocs.entities.PolicyEntity;
+import com.atanasvasil.api.mycardocs.entities.RoleEntity;
 import com.atanasvasil.api.mycardocs.entities.UserEntity;
 import com.atanasvasil.api.mycardocs.responses.cars.CarGetResponse;
 import com.atanasvasil.api.mycardocs.responses.policies.PolicyGetResponse;
-import com.atanasvasil.api.mycardocs.responses.users.UserGetResponse;
+import com.atanasvasil.api.mycardocs.responses.users.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,18 @@ public class Utils {
         ugr.setEmail(user.getEmail());
         ugr.setFirstName(user.getFirstName());
         ugr.setLastName(user.getLastName());
+        ugr.setCreatedOn(user.getCreatedOn());
         ugr.setEditedOn(user.getEditedOn());
+
+        List<RoleGetResponse> roles = new ArrayList<>();
+
+        for (RoleEntity storedRole : user.getRoles()) {
+            RoleGetResponse role = new RoleGetResponse();
+            role.setRole(storedRole.getRole());
+            roles.add(role);
+        }
+
+        ugr.setRoles(roles);
 
         return ugr;
     }

@@ -20,6 +20,8 @@ import java.util.List;
 import static com.atanasvasil.api.mycardocs.utils.Utils.*;
 
 import io.swagger.annotations.ApiOperation;
+import java.security.Principal;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  * @author Atanas Yordanov Arshinkov
@@ -87,8 +89,9 @@ public class PoliciesController {
     }
 
     @ApiOperation(value = "Get policies by user ID")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId)")
     @GetMapping(value = "/api/policies/user/id/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PolicyGetResponse>> getPoliciesByUserId(@PathVariable("userId") Long userId) {
+    public ResponseEntity<List<PolicyGetResponse>> getPoliciesByUserId(@PathVariable("userId") String userId, Principal principal) {
 
         List<PolicyEntity> storedPolicies = policyService.getPoliciesByUserId(userId);
 
@@ -102,8 +105,9 @@ public class PoliciesController {
     }
 
     @ApiOperation(value = "Get particular policy")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfPolicy(#principal, #policyId)")
     @GetMapping(value = "/api/policies/{policyId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PolicyGetResponse> getPolicy(@PathVariable("policyId") String policyId) {
+    public ResponseEntity<PolicyGetResponse> getPolicy(@PathVariable("policyId") String policyId, Principal principal) {
 
         PolicyEntity policy = policyService.getPolicyByPolicyId(policyId);
 
@@ -117,8 +121,9 @@ public class PoliciesController {
     }
 
     @ApiOperation(value = "Create policy")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #pcr.userId)")
     @PostMapping(value = "/api/policies", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PolicyGetResponse> createPolicy(@RequestBody PolicyCreateRequest pcr) {
+    public ResponseEntity<PolicyGetResponse> createPolicy(@RequestBody PolicyCreateRequest pcr, Principal principal) {
 
         try {
             PolicyEntity createdPolicy = policyService.createPolicy(pcr);
@@ -134,8 +139,9 @@ public class PoliciesController {
     }
 
     @ApiOperation(value = "Update policy")
-    @PutMapping(value = "/api/policies", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PolicyGetResponse> updatePolicy(@RequestBody PolicyUpdateRequest pur) {
+    @PreAuthorize("@securityExpressions.isUserOwnerOfPolicy(#principal, #policyId) and @securityExpressions.isUserSelf(#principal, #pur.userId)")
+    @PutMapping(value = "/api/policies/{policyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PolicyGetResponse> updatePolicy(@PathVariable("policyId") String policyId, @RequestBody PolicyUpdateRequest pur, Principal principal) {
 
         try {
             PolicyEntity updatedPolicy = policyService.updatePolicy(pur);
@@ -150,8 +156,9 @@ public class PoliciesController {
     }
 
     @ApiOperation(value = "Delete policy")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfPolicy(#principal, #policyId)")
     @DeleteMapping(value = "/api/policies/{policyId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> deleteCar(@PathVariable("policyId") String policyId) {
+    public ResponseEntity<Boolean> deleteCar(@PathVariable("policyId") String policyId, Principal principal) {
 
         try {
             policyService.deletePolicy(policyId);
@@ -162,8 +169,9 @@ public class PoliciesController {
     }
 
     @ApiOperation(value = "Get policies count for user")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId)")
     @GetMapping(value = "/api/policies/count/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> getPoliciesCountByUserId(@PathVariable("userId") Long userId) {
+    public ResponseEntity<Long> getPoliciesCountByUserId(@PathVariable("userId") String userId, Principal principal) {
 
         Long policiesCount = policyService.getPoliciesCountByUserId(userId);
         

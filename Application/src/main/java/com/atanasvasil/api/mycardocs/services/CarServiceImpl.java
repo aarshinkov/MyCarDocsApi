@@ -3,7 +3,6 @@ package com.atanasvasil.api.mycardocs.services;
 import com.atanasvasil.api.mycardocs.entities.CarEntity;
 import com.atanasvasil.api.mycardocs.entities.UserEntity;
 import com.atanasvasil.api.mycardocs.repositories.CarsRepository;
-import com.atanasvasil.api.mycardocs.repositories.UsersRepository;
 import com.atanasvasil.api.mycardocs.requests.cars.CarCreateRequest;
 import com.atanasvasil.api.mycardocs.requests.cars.CarUpdateRequest;
 import java.sql.Timestamp;
@@ -28,7 +27,7 @@ public class CarServiceImpl implements CarService {
     private CarsRepository carsRepository;
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UserService userService;
 
     @Override
     public List<CarEntity> getCars() {
@@ -36,7 +35,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarEntity> getCarsByOwner(Long userId) {
+    public List<CarEntity> getCarsByOwner(String userId) {
         return carsRepository.findAllByOwnerUserId(userId);
     }
 
@@ -53,7 +52,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public CarEntity createCar(CarCreateRequest ccr) throws Exception {
 
-        UserEntity owner = usersRepository.findByUserId(ccr.getUserId());
+        UserEntity owner = userService.getUserByUserId(ccr.getUserId());
 
         if (owner == null) {
             throw new Exception("User does not exist");
@@ -75,15 +74,15 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarEntity updateCar(CarUpdateRequest cur) throws Exception {
+    public CarEntity updateCar(String carId, CarUpdateRequest cur) throws Exception {
 
-        CarEntity car = carsRepository.findByCarId(cur.getCarId());
+        CarEntity car = carsRepository.findByCarId(carId);
 
         if (car == null) {
             throw new Exception("Car does not exist");
         }
 
-        car.setCarId(cur.getCarId());
+        car.setCarId(carId);
         car.setBrand(cur.getBrand());
         car.setModel(cur.getModel());
         car.setColor(cur.getColor());
@@ -110,14 +109,25 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Boolean hasUserCars(Long userId) {
+    public Boolean hasUserCars(String userId) {
 
-        return !getCarsByOwner(userId).isEmpty();
+        log.debug("Checking if user has any cars");
+
+        final List<CarEntity> cars = getCarsByOwner(userId);
+        final boolean hasUserCars = !cars.isEmpty();
+
+        if (hasUserCars) {
+            log.debug("User has cars: " + cars.size());
+        } else {
+            log.debug("User hasn't got any cars");
+        }
+
+        return hasUserCars;
     }
 
     @Override
-    public Long getCarsCountByUserId(Long userId) {
-        
+    public Long getCarsCountByUserId(String userId) {
+
         return carsRepository.countByOwnerUserId(userId);
     }
 }

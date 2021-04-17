@@ -23,5 +23,5 @@ public class CarCreateRequest implements Serializable {
     private Integer year;
     private String licensePlate;
     private String alias;
-    private Long userId;
+    private String userId;
 }

@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.atanasvasil.api</groupId>
     <artifactId>my-car-docs</artifactId>
-    <version>1.4.4</version>
+    <version>1.5.01</version>
     <packaging>war</packaging>
     <name>MyCarDocsApi</name>
     <description>RESTful API for MyCarDocs application</description>
@@ -36,6 +36,11 @@
         </dependency>
         
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
@@ -54,6 +59,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
         
         <dependency>

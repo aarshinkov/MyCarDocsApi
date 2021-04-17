@@ -14,7 +14,7 @@ public interface CarService {
 
     List<CarEntity> getCars();
 
-    List<CarEntity> getCarsByOwner(Long userId);
+    List<CarEntity> getCarsByOwner(String userId);
 
     CarEntity getCarByCarId(String carId);
 
@@ -22,11 +22,11 @@ public interface CarService {
 
     CarEntity createCar(CarCreateRequest ccr) throws Exception;
 
-    CarEntity updateCar(CarUpdateRequest cur) throws Exception;
+    CarEntity updateCar(String carId, CarUpdateRequest cur) throws Exception;
 
     void deleteCar(String carId) throws Exception;
 
-    Boolean hasUserCars(Long userId);
+    Boolean hasUserCars(String userId);
     
-    Long getCarsCountByUserId(Long userId);
+    Long getCarsCountByUserId(String userId);
 }

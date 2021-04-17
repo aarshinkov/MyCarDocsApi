@@ -3,7 +3,6 @@ package com.atanasvasil.api.mycardocs.requests.policies;
 import lombok.*;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -24,4 +23,5 @@ public class PolicyUpdateRequest implements Serializable {
     private String carId;
     private Date startDate;
     private Date endDate;
+    private String userId;
 }
