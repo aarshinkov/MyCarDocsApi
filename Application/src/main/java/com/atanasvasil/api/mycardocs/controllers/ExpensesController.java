@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.atanasvasil.api.mycardocs.utils.Utils.getFuelExpenseFromEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * @author Atanas Yordanov Arshinkov
@@ -30,6 +32,21 @@ public class ExpensesController {
 
     @Autowired
     private ExpenseService expenseService;
+
+    @ApiOperation(value = "Get fuel expense")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfFuelExpense(#principal, #fuelExpenseId)")
+    @GetMapping(value = "/api/expenses/fuel/{fuelExpenseId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FuelExpenseGetResponse> getFuelExpense(@PathVariable("fuelExpenseId") String fuelExpenseId, Principal principal) {
+
+        FuelExpenseEntity fuelExpense = expenseService.getFuelExpenseById(fuelExpenseId);
+
+        if (fuelExpense == null) {
+            return null;
+        }
+        FuelExpenseGetResponse fegr = getFuelExpenseFromEntity(fuelExpense);
+
+        return new ResponseEntity<>(fegr, HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Create fuel expense")
     @PreAuthorize("@securityExpressions.isUserSelf(#principal, #fecr.userId) and @securityExpressions.isUserOwnerOfCar(#principal, #fecr.carId)")

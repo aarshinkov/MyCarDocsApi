@@ -10,5 +10,7 @@ import com.atanasvasil.api.mycardocs.requests.expenses.fuel.FuelExpenseCreateReq
  */
 public interface ExpenseService {
 
+    FuelExpenseEntity getFuelExpenseById(String fuelExpenseId);
+
     FuelExpenseEntity createFuelExpense(FuelExpenseCreateRequest fecr) throws MCDException;
 }

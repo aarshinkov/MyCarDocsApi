@@ -26,6 +26,9 @@ public class SecurityExpressions {
     @Autowired
     private PoliciesRepository policiesRepository;
 
+    @Autowired
+    private FuelExpensesRepository fuelExpensesRepository;
+
     public boolean isUserSelf(Principal principal, String userId) {
 
         if (principal == null) {
@@ -113,6 +116,29 @@ public class SecurityExpressions {
         }
 
         log.debug("User \"" + email + "\" is NOT the owner of car with license plate: " + licensePlate);
+
+        return false;
+    }
+
+    public boolean isUserOwnerOfFuelExpense(Principal principal, String fuelExpenseId) {
+
+        if (principal == null) {
+            log.debug("User is not authenticated");
+            return false;
+        }
+
+        final String email = principal.getName();
+
+        List<FuelExpenseEntity> fuelExpenses = fuelExpensesRepository.findAllByUserEmail(email);
+
+        for (FuelExpenseEntity fuelExpense : fuelExpenses) {
+            if (fuelExpenseId.equals(fuelExpense.getFuelExpenseId())) {
+                log.debug("User \"" + email + "\" is owner of fuel expense with ID: " + fuelExpenseId);
+                return true;
+            }
+        }
+
+        log.debug("User \"" + email + "\" is NOT the owner of fuel expense with ID: " + fuelExpenseId);
 
         return false;
     }

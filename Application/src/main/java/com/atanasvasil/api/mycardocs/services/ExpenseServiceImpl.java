@@ -3,6 +3,7 @@ package com.atanasvasil.api.mycardocs.services;
 import com.atanasvasil.api.mycardocs.dao.ExpensesDao;
 import com.atanasvasil.api.mycardocs.entities.FuelExpenseEntity;
 import com.atanasvasil.api.mycardocs.exceptions.MCDException;
+import com.atanasvasil.api.mycardocs.repositories.FuelExpensesRepository;
 import com.atanasvasil.api.mycardocs.requests.expenses.fuel.FuelExpenseCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,14 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Autowired
     private ExpensesDao expensesDao;
+
+    @Autowired
+    private FuelExpensesRepository fuelExpensesRepository;
+
+    @Override
+    public FuelExpenseEntity getFuelExpenseById(String fuelExpenseId) {
+        return fuelExpensesRepository.findByFuelExpenseId(fuelExpenseId);
+    }
 
     @Override
     public FuelExpenseEntity createFuelExpense(FuelExpenseCreateRequest fecr) throws MCDException {

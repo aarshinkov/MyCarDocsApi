@@ -144,6 +144,7 @@ public class PoliciesController {
     public ResponseEntity<PolicyGetResponse> updatePolicy(@PathVariable("policyId") String policyId, @RequestBody PolicyUpdateRequest pur, Principal principal) {
 
         try {
+            pur.setPolicyId(policyId);
             PolicyEntity updatedPolicy = policyService.updatePolicy(pur);
 
             PolicyGetResponse pgr = getPolicyFromEntity(updatedPolicy);
@@ -174,7 +175,7 @@ public class PoliciesController {
     public ResponseEntity<Long> getPoliciesCountByUserId(@PathVariable("userId") String userId, Principal principal) {
 
         Long policiesCount = policyService.getPoliciesCountByUserId(userId);
-        
+
         return new ResponseEntity(policiesCount, HttpStatus.OK);
     }
 }
