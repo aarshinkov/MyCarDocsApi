@@ -36,7 +36,7 @@ public class PolicyEntity implements Serializable {
     @Column(name = "ins_name")
     private String insName;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "car_id", referencedColumnName = "car_id")
     private CarEntity car;
 

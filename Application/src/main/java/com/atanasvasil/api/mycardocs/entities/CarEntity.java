@@ -51,7 +51,7 @@ public class CarEntity implements Serializable {
     @Column(name = "alias")
     private String alias;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "user_id")
     private UserEntity owner;
 

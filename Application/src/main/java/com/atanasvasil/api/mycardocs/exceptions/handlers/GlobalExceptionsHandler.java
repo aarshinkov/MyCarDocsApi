@@ -1,6 +1,7 @@
 package com.atanasvasil.api.mycardocs.exceptions.handlers;
 
 import java.time.LocalDateTime;
+
 import com.atanasvasil.api.mycardocs.exceptions.*;
 import com.atanasvasil.api.mycardocs.errors.responses.*;
 import org.slf4j.Logger;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 /**
- *
  * @author Atanas Yordanov Arshinkov
  * @since 1.0.0
  */
@@ -54,18 +54,20 @@ public class GlobalExceptionsHandler {
 //
 //    return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
 //  }
-//    @ExceptionHandler(BssException.class)
-//    public ResponseEntity<BssErrorResponse> bssErrorHandler(BssException ex, WebRequest request) {
-//        BssErrorResponse errors = new BssErrorResponse();
-//        errors.setMessage(ex.getMessage());
-//        errors.setCode(ex.getCode());
-//        errors.setDetails(ex.getDetails());
-//        errors.setTimestamp(LocalDateTime.now());
-//
-//        log.error("Error: " + errors.toString());
-//
-//        return new ResponseEntity<>(errors, ex.getStatus());
-//    }
+
+    @ExceptionHandler(MCDException.class)
+    public ResponseEntity<MCDErrorResponse> mcdErrorHandler(MCDException ex, WebRequest request) {
+
+        MCDErrorResponse error = new MCDErrorResponse();
+        error.setMessage(ex.getMessage());
+        error.setCode(ex.getCode());
+        error.setDetails(ex.getDetails());
+        error.setTimestamp(LocalDateTime.now());
+
+        log.error("Error: " + error.toString());
+
+        return new ResponseEntity<>(error, ex.getStatus());
+    }
 
 //    @ExceptionHandler(FieldValidationException.class)
 //    public ResponseEntity<FieldValidationErrorResponse> fieldValidationHandler(FieldValidationException ex, WebRequest request) {

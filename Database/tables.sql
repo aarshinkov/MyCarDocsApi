@@ -46,3 +46,15 @@ CREATE TABLE IF NOT EXISTS policies(
 	end_date timestamp not null
 );
 
+CREATE TABLE IF NOT EXISTS fuel_expenses(
+	fuel_expense_id varchar(200) not null primary key,
+	price_per_litre numeric not null,
+	litres numeric not null,
+	discount numeric,
+	mileage bigint,
+	car_id varchar(200) not null references cars(car_id) on update cascade on delete cascade,
+	user_id varchar(200) not null references users(user_id) on update cascade on delete cascade,
+	created_on timestamp not null default NOW(),
+	edited_on timestamp
+);
+

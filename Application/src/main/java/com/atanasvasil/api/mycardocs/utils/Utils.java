@@ -1,10 +1,8 @@
 package com.atanasvasil.api.mycardocs.utils;
 
-import com.atanasvasil.api.mycardocs.entities.CarEntity;
-import com.atanasvasil.api.mycardocs.entities.PolicyEntity;
-import com.atanasvasil.api.mycardocs.entities.RoleEntity;
-import com.atanasvasil.api.mycardocs.entities.UserEntity;
+import com.atanasvasil.api.mycardocs.entities.*;
 import com.atanasvasil.api.mycardocs.responses.cars.CarGetResponse;
+import com.atanasvasil.api.mycardocs.responses.expenses.fuel.FuelExpenseGetResponse;
 import com.atanasvasil.api.mycardocs.responses.policies.PolicyGetResponse;
 import com.atanasvasil.api.mycardocs.responses.users.*;
 
@@ -82,5 +80,21 @@ public class Utils {
         pgr.setEndDate(policy.getEndDate());
 
         return pgr;
+    }
+
+    public static FuelExpenseGetResponse getFuelExpenseFromEntity(FuelExpenseEntity fuelExpense) {
+
+        FuelExpenseGetResponse fegr = new FuelExpenseGetResponse();
+        fegr.setFuelExpenseId(fuelExpense.getFuelExpenseId());
+        fegr.setPricePerLitre(fuelExpense.getPricePerLitre());
+        fegr.setLitres(fuelExpense.getLitres());
+        fegr.setDiscount(fuelExpense.getDiscount());
+        fegr.setMileage(fuelExpense.getMileage());
+        fegr.setCar(getCarFromEntity(fuelExpense.getCar()));
+        fegr.setUser(getUserFromEntity(fuelExpense.getUser()));
+        fegr.setCreatedOn(fuelExpense.getCreatedOn());
+        fegr.setEditedOn(fuelExpense.getEditedOn());
+
+        return fegr;
     }
 }
