@@ -18,34 +18,28 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "fuel_expenses")
+@Table(name = "service_expenses")
 @DynamicInsert
 @DynamicUpdate
-public class FuelExpenseEntity implements Serializable {
+public class ServiceExpenseEntity implements Serializable {
 
     @Id
-    @Column(name = "fuel_expense_id")
-    private String fuelExpenseId;
-
-    @Column(name = "price_per_litre")
-    private Double pricePerLitre;
-
-    @Column(name = "litres")
-    private Double litres;
-
-    @Column(name = "discount")
-    private Double discount;
-
-    @Column(name = "mileage")
-    private Long mileage;
+    @Column(name = "service_expense_id")
+    private String serviceExpenseId;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "type", referencedColumnName = "type")
+    private ServiceExpenseTypeEntity type;
 
     @ManyToOne
     @JoinColumn(name = "car_id", referencedColumnName = "car_id")
     private CarEntity car;
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-//    private UserEntity user;
+    
+    @Column(name = "price")
+    private Double price;
+    
+    @Column(name = "notes")
+    private String notes;
 
     @Column(name = "created_on")
     private Timestamp createdOn;

@@ -14,7 +14,7 @@ public interface FuelExpensesRepository extends JpaRepository<FuelExpenseEntity,
 
     FuelExpenseEntity findByFuelExpenseId(String fuelExpenseId);
 
-    List<FuelExpenseEntity> findAllByUserUserId(String userId);
+    List<FuelExpenseEntity> findAllByCarOwnerUserId(String userId);
 
-    List<FuelExpenseEntity> findAllByUserEmail(String email);
+    List<FuelExpenseEntity> findAllByCarOwnerEmail(String email);
 }

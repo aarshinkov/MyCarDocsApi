@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <!-- To enable JMX Management -->
+    <jmxConfigurator/>
+  
+    <property name="LOG_DIR" value="${catalina.home}/logs" />
+
+    <appender name="FILE_GENERAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/mycardocs-api.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} MyCarDocsAPIProd | %-5level | %logger{0} \(%line\) - %msg%n</Pattern>
+        </encoder>
+ 
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_DIR}/archive/mycardocs-api-prod.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} MyCarDocsAPIProd | %-5level | %logger{0} \(%line\) - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.atanasvasil.api.mycardocs" level="debug" additivity="false">
+        <appender-ref ref="FILE_GENERAL"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <!--  To skip messages from this class  -->
+    <logger name="org.springframework.security.web.context.HttpSessionSecurityContextRepository$SaveToSessionResponseWrapper" level="WARN"/>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

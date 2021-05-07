@@ -53,7 +53,34 @@ CREATE TABLE IF NOT EXISTS fuel_expenses(
 	discount numeric,
 	mileage bigint,
 	car_id varchar(200) not null references cars(car_id) on update cascade on delete cascade,
-	user_id varchar(200) not null references users(user_id) on update cascade on delete cascade,
+	created_on timestamp not null default NOW(),
+	edited_on timestamp
+);
+
+CREATE TABLE IF NOT EXISTS service_expense_types(
+	type int not null primary key,
+	type_description varchar(200) not null
+);
+
+INSERT INTO service_expense_types VALUES (1, 'Scheduled maintenance');
+INSERT INTO service_expense_types VALUES (2, 'Tyres change');
+INSERT INTO service_expense_types VALUES (3, 'Oil change');
+INSERT INTO service_expense_types VALUES (4, 'Oil filter change');
+INSERT INTO service_expense_types VALUES (5, 'Air filter change');
+INSERT INTO service_expense_types VALUES (6, 'Battery replacement');
+INSERT INTO service_expense_types VALUES (7, 'Wheels balance');
+INSERT INTO service_expense_types VALUES (8, 'Belt replacement');
+INSERT INTO service_expense_types VALUES (9, 'Tow');
+INSERT INTO service_expense_types VALUES (10, 'Headlights replacement');
+INSERT INTO service_expense_types VALUES (11, 'Tailights replacement');
+INSERT INTO service_expense_types VALUES (12, 'Part/s change');
+
+CREATE TABLE IF NOT EXISTS service_expenses(
+	service_expense_id varchar(200) not null primary key,
+	type int not null default 1 references service_expense_types(type) on delete restrict,
+	car_id varchar(200) not null references cars(car_id) on update cascade on delete cascade,
+	price numeric not null,
+	notes text,
 	created_on timestamp not null default NOW(),
 	edited_on timestamp
 );

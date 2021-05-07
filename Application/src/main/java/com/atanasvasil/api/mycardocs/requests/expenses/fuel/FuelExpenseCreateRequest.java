@@ -20,5 +20,4 @@ public class FuelExpenseCreateRequest implements Serializable {
     private Double discount;
     private Long mileage;
     private String carId;
-    private String userId;
 }

@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.atanasvasil.api</groupId>
     <artifactId>my-car-docs</artifactId>
-    <version>1.5.01</version>
+    <version>1.6.00</version>
     <packaging>war</packaging>
     <name>MyCarDocsApi</name>
     <description>RESTful API for MyCarDocs application</description>
@@ -28,6 +28,102 @@
         <warname>MyCarDocsApi</warname>
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
     </properties>
+    
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <build.profile>DEV</build.profile>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo>PACKAGING FOR DEVELOPMENT ENV...</echo>
+                                        <copy file="src/main/resources/application_dev.properties" tofile="${project.build.outputDirectory}/application.properties"/>
+                                        <copy file="src/main/resources/env_dev.properties" tofile="${project.build.outputDirectory}/env.properties"/>
+                                        <copy file="src/main/resources/logback-DEV.xml" tofile="${project.build.outputDirectory}/logback.xml"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <build.profile>TEST</build.profile>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo>PACKAGING FOR TEST ENV...</echo>
+                                        <copy file="src/main/resources/application_test.properties" tofile="${project.build.outputDirectory}/application.properties"/>
+                                        <copy file="src/main/resources/env_test.properties" tofile="${project.build.outputDirectory}/env.properties"/>
+                                        <copy file="src/main/resources/logback-DEV.xml" tofile="${project.build.outputDirectory}/logback.xml"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile>PROD</build.profile>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo>PACKAGING FOR PROD ENV...</echo>
+                                        <copy file="src/main/resources/application_prod.properties" tofile="${project.build.outputDirectory}/application.properties"/>
+                                        <copy file="src/main/resources/env_prod.properties" tofile="${project.build.outputDirectory}/env.properties"/>
+                                        <copy file="src/main/resources/logback-PROD.xml" tofile="${project.build.outputDirectory}/logback.xml"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     
     <dependencies>
         <dependency>
@@ -110,7 +206,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>-->
-        <finalName>MyCarDocsApi##${project.version}</finalName>
+        <finalName>MyCarDocsApi-${build.profile}##${project.version}</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>
@@ -163,7 +259,7 @@
                           </webResource>
                         </webResources>-->
 
-                        <warName>${warname}##${project.version}</warName>
+                        <warName>${warname}${build.profile}##${project.version}</warName>
                         <!--<warName>${warname}-${build.profile}</warName>-->
                         <!--<warName>${warname}-v${project.version}</warName>-->
             

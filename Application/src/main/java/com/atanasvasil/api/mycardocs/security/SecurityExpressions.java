@@ -28,6 +28,9 @@ public class SecurityExpressions {
 
     @Autowired
     private FuelExpensesRepository fuelExpensesRepository;
+    
+    @Autowired
+    private ServiceExpensesRepository serviceExpensesRepository;
 
     public boolean isUserSelf(Principal principal, String userId) {
 
@@ -129,7 +132,7 @@ public class SecurityExpressions {
 
         final String email = principal.getName();
 
-        List<FuelExpenseEntity> fuelExpenses = fuelExpensesRepository.findAllByUserEmail(email);
+        List<FuelExpenseEntity> fuelExpenses = fuelExpensesRepository.findAllByCarOwnerEmail(email);
 
         for (FuelExpenseEntity fuelExpense : fuelExpenses) {
             if (fuelExpenseId.equals(fuelExpense.getFuelExpenseId())) {
@@ -139,6 +142,29 @@ public class SecurityExpressions {
         }
 
         log.debug("User \"" + email + "\" is NOT the owner of fuel expense with ID: " + fuelExpenseId);
+
+        return false;
+    }
+    
+    public boolean isUserOwnerOfServiceExpense(Principal principal, String serviceExpenseId) {
+
+        if (principal == null) {
+            log.debug("User is not authenticated");
+            return false;
+        }
+
+        final String email = principal.getName();
+
+        List<ServiceExpenseEntity> serviceExpenses = serviceExpensesRepository.findAllByCarOwnerEmail(email);
+
+        for (ServiceExpenseEntity serviceExpense : serviceExpenses) {
+            if (serviceExpenseId.equals(serviceExpense.getServiceExpenseId())) {
+                log.debug("User \"" + email + "\" is owner of servce expense with ID: " + serviceExpenseId);
+                return true;
+            }
+        }
+
+        log.debug("User \"" + email + "\" is NOT the owner of service expense with ID: " + serviceExpenseId);
 
         return false;
     }

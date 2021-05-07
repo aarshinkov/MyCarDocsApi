@@ -1,8 +1,10 @@
 package com.atanasvasil.api.mycardocs.services;
 
-import com.atanasvasil.api.mycardocs.entities.FuelExpenseEntity;
+import com.atanasvasil.api.mycardocs.collections.ObjCollection;
+import com.atanasvasil.api.mycardocs.entities.*;
 import com.atanasvasil.api.mycardocs.exceptions.MCDException;
 import com.atanasvasil.api.mycardocs.requests.expenses.fuel.FuelExpenseCreateRequest;
+import com.atanasvasil.api.mycardocs.requests.expenses.service.ServiceExpenseCreateRequest;
 
 /**
  * @author Atanas Yordanov Arshinkov
@@ -10,7 +12,17 @@ import com.atanasvasil.api.mycardocs.requests.expenses.fuel.FuelExpenseCreateReq
  */
 public interface ExpenseService {
 
+    // FUEL
+    ObjCollection<FuelExpenseEntity> getFuelExpensesByUser(Integer page, Integer limit, String userId);
+
     FuelExpenseEntity getFuelExpenseById(String fuelExpenseId);
 
     FuelExpenseEntity createFuelExpense(FuelExpenseCreateRequest fecr) throws MCDException;
+
+    // SERVICE
+    ObjCollection<ServiceExpenseEntity> getServiceExpensesByUser(Integer page, Integer limit, String userId);
+
+    ServiceExpenseEntity getServiceExpenseById(String serviceExpenseId);
+
+    ServiceExpenseEntity createServiceExpense(ServiceExpenseCreateRequest secr) throws MCDException;
 }

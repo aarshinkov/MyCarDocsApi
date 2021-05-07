@@ -1,4 +1,4 @@
-package com.atanasvasil.api.mycardocs.responses.expenses.fuel;
+package com.atanasvasil.api.mycardocs.responses.expenses.service;
 
 import java.io.Serializable;
 import com.atanasvasil.api.mycardocs.responses.cars.*;
@@ -19,14 +19,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class FuelExpenseGetResponse implements Serializable {
+public class ServiceExpenseGetResponse implements Serializable {
 
-    private String fuelExpenseId;
-    private Double pricePerLitre;
-    private Double litres;
-    private Double discount;
-    private Long mileage;
+    private String serviceExpenseId;
+    private ServiceExpenseTypeGetResponse type;
     private CarGetResponse car;
+    private Double price;
+    private String notes;
     private Timestamp createdOn;
     private Timestamp editedOn;
 }

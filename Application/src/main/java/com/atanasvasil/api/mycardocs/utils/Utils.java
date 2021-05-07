@@ -3,6 +3,7 @@ package com.atanasvasil.api.mycardocs.utils;
 import com.atanasvasil.api.mycardocs.entities.*;
 import com.atanasvasil.api.mycardocs.responses.cars.CarGetResponse;
 import com.atanasvasil.api.mycardocs.responses.expenses.fuel.FuelExpenseGetResponse;
+import com.atanasvasil.api.mycardocs.responses.expenses.service.*;
 import com.atanasvasil.api.mycardocs.responses.policies.PolicyGetResponse;
 import com.atanasvasil.api.mycardocs.responses.users.*;
 
@@ -82,6 +83,19 @@ public class Utils {
         return pgr;
     }
 
+    // FUEL
+    public static List<FuelExpenseGetResponse> getFuelExpensesResponseFromEntity(List<FuelExpenseEntity> fuelExpenses) {
+
+        List<FuelExpenseGetResponse> result = new ArrayList<>();
+
+        for (FuelExpenseEntity fuelExpense : fuelExpenses) {
+            FuelExpenseGetResponse fuelExpenseGetResponse = getFuelExpenseFromEntity(fuelExpense);
+            result.add(fuelExpenseGetResponse);
+        }
+
+        return result;
+    }
+
     public static FuelExpenseGetResponse getFuelExpenseFromEntity(FuelExpenseEntity fuelExpense) {
 
         FuelExpenseGetResponse fegr = new FuelExpenseGetResponse();
@@ -91,10 +105,41 @@ public class Utils {
         fegr.setDiscount(fuelExpense.getDiscount());
         fegr.setMileage(fuelExpense.getMileage());
         fegr.setCar(getCarFromEntity(fuelExpense.getCar()));
-        fegr.setUser(getUserFromEntity(fuelExpense.getUser()));
         fegr.setCreatedOn(fuelExpense.getCreatedOn());
         fegr.setEditedOn(fuelExpense.getEditedOn());
 
         return fegr;
+    }
+
+    // SERVICE
+    public static List<ServiceExpenseGetResponse> getServiceExpensesResponseFromEntity(List<ServiceExpenseEntity> serviceExpenses) {
+
+        List<ServiceExpenseGetResponse> result = new ArrayList<>();
+
+        for (ServiceExpenseEntity serviceExpense : serviceExpenses) {
+            ServiceExpenseGetResponse serviceExpenseGetResponse = getServiceExpenseFromEntity(serviceExpense);
+            result.add(serviceExpenseGetResponse);
+        }
+
+        return result;
+    }
+
+    public static ServiceExpenseGetResponse getServiceExpenseFromEntity(ServiceExpenseEntity serviceExpense) {
+
+        ServiceExpenseGetResponse segr = new ServiceExpenseGetResponse();
+        segr.setServiceExpenseId(serviceExpense.getServiceExpenseId());
+
+        ServiceExpenseTypeGetResponse type = new ServiceExpenseTypeGetResponse();
+        type.setType(serviceExpense.getType().getType());
+        type.setTypeDescription(serviceExpense.getType().getTypeDescription());
+        segr.setType(type);
+
+        segr.setCar(getCarFromEntity(serviceExpense.getCar()));
+        segr.setPrice(serviceExpense.getPrice());
+        segr.setNotes(serviceExpense.getNotes());
+        segr.setCreatedOn(serviceExpense.getCreatedOn());
+        segr.setEditedOn(serviceExpense.getEditedOn());
+
+        return segr;
     }
 }

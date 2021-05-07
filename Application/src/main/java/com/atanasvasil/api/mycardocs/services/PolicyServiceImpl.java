@@ -47,7 +47,7 @@ public class PolicyServiceImpl implements PolicyService {
 
     @Override
     public List<PolicyEntity> getPoliciesByUserId(String userId) {
-        return policiesRepository.findAllByCarOwnerUserIdOrderByStartDate(userId);
+        return policiesRepository.findAllByCarOwnerUserIdOrderByStartDateDesc(userId);
     }
 
     @Override
