@@ -8,8 +8,11 @@ import com.atanasvasil.api.mycardocs.entities.*;
 import com.atanasvasil.api.mycardocs.exceptions.MCDException;
 import com.atanasvasil.api.mycardocs.repositories.CarsRepository;
 import com.atanasvasil.api.mycardocs.repositories.*;
+import com.atanasvasil.api.mycardocs.requests.expenses.ExpenseSummaryRequest;
 import com.atanasvasil.api.mycardocs.requests.expenses.fuel.FuelExpenseCreateRequest;
 import com.atanasvasil.api.mycardocs.requests.expenses.service.ServiceExpenseCreateRequest;
+import com.atanasvasil.api.mycardocs.responses.expenses.ExpenseSummaryItem;
+import com.atanasvasil.api.mycardocs.responses.expenses.ExpensesSummaryResponse;
 import com.atanasvasil.api.mycardocs.utils.*;
 import java.sql.CallableStatement;
 import org.slf4j.Logger;
@@ -49,6 +52,88 @@ public class ExpensesDaoImpl implements ExpensesDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public ExpensesSummaryResponse getExpensesSummary(ExpenseSummaryRequest esr) {
+
+        try (Connection conn = Objects.requireNonNull(jdbcTemplate.getDataSource().getConnection());
+                CallableStatement cstmt = conn.prepareCall("{? = call get_expenses_summary(?, ?, ?, ?)}")) {
+
+            try {
+
+                conn.setAutoCommit(false);
+
+                cstmt.setString(1, esr.getUserId());
+
+                if (esr.getCarId() == null) {
+                    cstmt.setNull(2, Types.VARCHAR);
+                } else {
+                    cstmt.setString(2, esr.getCarId());
+                }
+
+                if (esr.getYear() == null) {
+                    cstmt.setNull(3, Types.INTEGER);
+                } else {
+                    cstmt.setInt(3, esr.getYear());
+                }
+
+                cstmt.registerOutParameter(4, Types.REF_CURSOR);
+                cstmt.registerOutParameter(5, Types.REF_CURSOR);
+
+                cstmt.execute();
+
+                ExpensesSummaryResponse response = new ExpensesSummaryResponse();
+                response.setUserId(esr.getUserId());
+                response.setCarId(esr.getCarId());
+                response.setYear(esr.getYear());
+
+                ResultSet rsetFuel = (ResultSet) cstmt.getObject(4);
+
+                List<ExpenseSummaryItem> fuel = new ArrayList<>();
+
+                while (rsetFuel.next()) {
+                    ExpenseSummaryItem item = new ExpenseSummaryItem();
+                    item.setYear(rsetFuel.getInt("year"));
+                    item.setMonth(rsetFuel.getInt("month"));
+                    item.setTotal(rsetFuel.getDouble("total"));
+
+                    fuel.add(item);
+                }
+
+                response.setFuel(fuel);
+
+                ResultSet rsetService = (ResultSet) cstmt.getObject(5);
+
+                List<ExpenseSummaryItem> service = new ArrayList<>();
+
+                while (rsetService.next()) {
+                    ExpenseSummaryItem item = new ExpenseSummaryItem();
+                    item.setYear(rsetService.getInt("year"));
+                    item.setMonth(rsetService.getInt("month"));
+                    item.setTotal(rsetService.getDouble("total"));
+
+                    service.add(item);
+                }
+
+                response.setService(service);
+
+                conn.commit();
+
+                return response;
+
+            } catch (SQLException ex) {
+                conn.rollback();
+                log.error("Error getting expenses summary", ex);
+            } finally {
+                conn.setAutoCommit(true);
+            }
+
+        } catch (Exception e) {
+            log.error("Error getting expenses summary", e);
+        }
+
+        return null;
+    }
 
     // FUEL
     @Override

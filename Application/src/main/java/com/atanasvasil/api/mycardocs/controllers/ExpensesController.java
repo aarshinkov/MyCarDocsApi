@@ -6,6 +6,8 @@ import com.atanasvasil.api.mycardocs.collections.ServiceExpensesCollection;
 import com.atanasvasil.api.mycardocs.entities.*;
 import com.atanasvasil.api.mycardocs.requests.expenses.fuel.FuelExpenseCreateRequest;
 import com.atanasvasil.api.mycardocs.requests.expenses.service.ServiceExpenseCreateRequest;
+import com.atanasvasil.api.mycardocs.requests.expenses.*;
+import com.atanasvasil.api.mycardocs.responses.expenses.ExpensesSummaryResponse;
 import com.atanasvasil.api.mycardocs.responses.expenses.fuel.*;
 import com.atanasvasil.api.mycardocs.responses.expenses.service.*;
 import com.atanasvasil.api.mycardocs.services.ExpenseService;
@@ -142,5 +144,14 @@ public class ExpensesController {
         ServiceExpenseGetResponse segr = getServiceExpenseFromEntity(createdServiceExpense);
 
         return new ResponseEntity<>(segr, HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "Get expenses summary")
+    @GetMapping(value = "/api/expenses/summary", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ExpensesSummaryResponse> getExpensesSummary(@RequestBody ExpenseSummaryRequest esr) {
+
+        ExpensesSummaryResponse response = expenseService.getExpensesSummary(esr);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

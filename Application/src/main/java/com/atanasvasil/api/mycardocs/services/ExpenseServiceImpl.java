@@ -5,8 +5,10 @@ import com.atanasvasil.api.mycardocs.dao.ExpensesDao;
 import com.atanasvasil.api.mycardocs.entities.*;
 import com.atanasvasil.api.mycardocs.exceptions.MCDException;
 import com.atanasvasil.api.mycardocs.repositories.*;
+import com.atanasvasil.api.mycardocs.requests.expenses.ExpenseSummaryRequest;
 import com.atanasvasil.api.mycardocs.requests.expenses.fuel.FuelExpenseCreateRequest;
 import com.atanasvasil.api.mycardocs.requests.expenses.service.ServiceExpenseCreateRequest;
+import com.atanasvasil.api.mycardocs.responses.expenses.ExpensesSummaryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,11 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Autowired
     private ServiceExpensesRepository serviceExpensesRepository;
+
+    @Override
+    public ExpensesSummaryResponse getExpensesSummary(ExpenseSummaryRequest esr) {
+        return expensesDao.getExpensesSummary(esr);
+    }
 
     // FUEL
     @Override
