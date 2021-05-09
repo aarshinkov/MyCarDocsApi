@@ -63,16 +63,16 @@ CREATE TABLE IF NOT EXISTS service_expense_types(
 );
 
 INSERT INTO service_expense_types VALUES (1, 'Scheduled maintenance');
-INSERT INTO service_expense_types VALUES (2, 'Tyres change');
-INSERT INTO service_expense_types VALUES (3, 'Oil change');
-INSERT INTO service_expense_types VALUES (4, 'Oil filter change');
-INSERT INTO service_expense_types VALUES (5, 'Air filter change');
-INSERT INTO service_expense_types VALUES (6, 'Battery replacement');
-INSERT INTO service_expense_types VALUES (7, 'Wheels balance');
-INSERT INTO service_expense_types VALUES (8, 'Belt replacement');
-INSERT INTO service_expense_types VALUES (9, 'Tow');
-INSERT INTO service_expense_types VALUES (10, 'Headlights replacement');
-INSERT INTO service_expense_types VALUES (11, 'Tailights replacement');
+INSERT INTO service_expense_types VALUES (2, 'Engine repair');
+INSERT INTO service_expense_types VALUES (3, 'Tyres change');
+INSERT INTO service_expense_types VALUES (4, 'Oil change');
+INSERT INTO service_expense_types VALUES (5, 'Oil filter change');
+INSERT INTO service_expense_types VALUES (6, 'Air filter change');
+INSERT INTO service_expense_types VALUES (7, 'Battery replacement');
+INSERT INTO service_expense_types VALUES (8, 'Wheels balance');
+INSERT INTO service_expense_types VALUES (9, 'Belt replacement');
+INSERT INTO service_expense_types VALUES (10, 'Tow');
+INSERT INTO service_expense_types VALUES (11, 'Lights replacement');
 INSERT INTO service_expense_types VALUES (12, 'Part/s change');
 
 CREATE TABLE IF NOT EXISTS service_expenses(

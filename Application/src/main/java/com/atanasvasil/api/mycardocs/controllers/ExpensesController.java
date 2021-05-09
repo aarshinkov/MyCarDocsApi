@@ -117,7 +117,7 @@ public class ExpensesController {
     }
 
     @ApiOperation(value = "Get service expense")
-    @PreAuthorize("@securityExpressions.isUserOwnerOfServiceExpense(#principal, #fuelExpenseId)")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfServiceExpense(#principal, #serviceExpenseId)")
     @GetMapping(value = "/api/expenses/service/{serviceExpenseId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ServiceExpenseGetResponse> getServiceExpense(@PathVariable("serviceExpenseId") String serviceExpenseId, Principal principal) {
 
@@ -132,7 +132,7 @@ public class ExpensesController {
     }
 
     @ApiOperation(value = "Create service expense")
-    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId) and @securityExpressions.isUserOwnerOfCar(#principal, #fecr.carId)")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId) and @securityExpressions.isUserOwnerOfCar(#principal, #secr.carId)")
     @PostMapping(value = "/api/expenses/service", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ServiceExpenseGetResponse> createServiceExpense(@RequestBody ServiceExpenseCreateRequest secr,
             @RequestParam(name = "userId", required = true) String userId, Principal principal) {
