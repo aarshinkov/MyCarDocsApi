@@ -1,5 +1,6 @@
 package com.atanasvasil.api.mycardocs.responses.expenses;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ExpenseSummaryItem {
+public class ExpenseSummaryItem implements Serializable {
 
     private Integer year;
     private Integer month;

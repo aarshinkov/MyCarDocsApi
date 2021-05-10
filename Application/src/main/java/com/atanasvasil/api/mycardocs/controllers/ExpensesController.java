@@ -148,7 +148,7 @@ public class ExpensesController {
 
     @ApiOperation(value = "Get expenses summary")
     @GetMapping(value = "/api/expenses/summary", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExpensesSummaryResponse> getExpensesSummary(@RequestBody ExpenseSummaryRequest esr) {
+    public ResponseEntity<ExpensesSummaryResponse> getExpensesSummary(ExpenseSummaryRequest esr) {
 
         ExpensesSummaryResponse response = expenseService.getExpensesSummary(esr);
 

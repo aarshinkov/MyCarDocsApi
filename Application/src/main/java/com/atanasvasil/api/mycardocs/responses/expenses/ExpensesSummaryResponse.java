@@ -1,5 +1,6 @@
 package com.atanasvasil.api.mycardocs.responses.expenses;
 
+import java.io.Serializable;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ExpensesSummaryResponse {
+public class ExpensesSummaryResponse implements Serializable {
 
     private String userId;
     private String carId;
