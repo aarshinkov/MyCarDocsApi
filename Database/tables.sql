@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS service_expenses(
 	type int not null default 1 references service_expense_types(type) on delete restrict,
 	car_id varchar(200) not null references cars(car_id) on update cascade on delete cascade,
 	price numeric not null,
+	mileage bigint,
 	notes text,
 	created_on timestamp not null default NOW(),
 	edited_on timestamp

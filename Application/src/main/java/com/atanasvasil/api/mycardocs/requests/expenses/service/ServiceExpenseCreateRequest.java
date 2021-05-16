@@ -22,4 +22,5 @@ public class ServiceExpenseCreateRequest implements Serializable {
     private String carId;
     private Double price;
     private String notes;
+    private Long mileage;
 }

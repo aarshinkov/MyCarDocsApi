@@ -137,6 +137,7 @@ public class Utils {
         segr.setCar(getCarFromEntity(serviceExpense.getCar()));
         segr.setPrice(serviceExpense.getPrice());
         segr.setNotes(serviceExpense.getNotes());
+        segr.setMileage(serviceExpense.getMileage());
         segr.setCreatedOn(serviceExpense.getCreatedOn());
         segr.setEditedOn(serviceExpense.getEditedOn());
 

@@ -4,6 +4,9 @@ BEGIN
 	OPEN mcdCursor FOR
 	SELECT fe.*
 	FROM fuel_expenses fe
+	JOIN cars c ON fe.car_id = c.car_id
+	JOIN users u ON c.owner = u.user_id
+	WHERE u.user_id = ip_user_id
 	ORDER BY fe.created_on desc
 	LIMIT ip_expenses_count
 	OFFSET (ip_page_number - 1) * ip_expenses_count;
@@ -24,6 +27,9 @@ BEGIN
 	SELECT se.*, st.type_description
 	FROM service_expenses se
 	JOIN service_expense_types st ON se.type = st.type
+	JOIN cars c on se.car_id = c.car_id
+	JOIN users u on c.owner = u.user_id
+	WHERE user_id = ip_user_id
 	ORDER BY se.created_on desc
 	LIMIT ip_expenses_count
 	OFFSET (ip_page_number - 1) * ip_expenses_count;

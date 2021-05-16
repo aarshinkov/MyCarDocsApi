@@ -26,6 +26,7 @@ public class ServiceExpenseGetResponse implements Serializable {
     private CarGetResponse car;
     private Double price;
     private String notes;
+    private Long mileage;
     private Timestamp createdOn;
     private Timestamp editedOn;
 }

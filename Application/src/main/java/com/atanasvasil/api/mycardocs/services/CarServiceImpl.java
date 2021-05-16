@@ -113,11 +113,11 @@ public class CarServiceImpl implements CarService {
 
         log.debug("Checking if user has any cars");
 
-        final List<CarEntity> cars = getCarsByOwner(userId);
-        final boolean hasUserCars = !cars.isEmpty();
+        final Long carsCount = getCarsCountByUserId(userId);
+        final boolean hasUserCars = carsCount != 0;
 
         if (hasUserCars) {
-            log.debug("User has cars: " + cars.size());
+            log.debug("User has cars: " + carsCount);
         } else {
             log.debug("User hasn't got any cars");
         }

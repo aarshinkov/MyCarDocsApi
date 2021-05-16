@@ -302,7 +302,7 @@ public class ExpensesDaoImpl implements ExpensesDao {
             throw new MCDException(800, "Car not found", "Car with identifier " + secr.getCarId() + " not found!", HttpStatus.NOT_FOUND);
         }
 
-        final String sql = "INSERT INTO service_expenses (service_expense_id, type, car_id, price, notes) VALUES (?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO service_expenses (service_expense_id, type, car_id, price, notes, mileage) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -321,6 +321,12 @@ public class ExpensesDaoImpl implements ExpensesDao {
                     pstmt.setNull(5, Types.VARCHAR);
                 } else {
                     pstmt.setString(5, secr.getNotes());
+                }
+
+                if (secr.getMileage() == null) {
+                    pstmt.setNull(6, Types.NUMERIC);
+                } else {
+                    pstmt.setDouble(6, secr.getMileage());
                 }
 
                 pstmt.execute();
@@ -431,6 +437,7 @@ public class ExpensesDaoImpl implements ExpensesDao {
 
         serviceExpense.setPrice(rset.getDouble("price"));
         serviceExpense.setNotes(rset.getString("notes"));
+        serviceExpense.setMileage(rset.getLong("mileage"));
         serviceExpense.setCreatedOn(rset.getTimestamp("created_on"));
         serviceExpense.setEditedOn(rset.getTimestamp("edited_on"));
 

@@ -177,4 +177,14 @@ public class CarsController {
 
         return new ResponseEntity(carsCount, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Checks if user has cars")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId)")
+    @GetMapping(value = "/api/cars/{userId}/has", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> hasUserCars(@PathVariable("userId") String userId, Principal principal) {
+
+        Boolean hasCars = carService.hasUserCars(userId);
+
+        return new ResponseEntity(hasCars, HttpStatus.OK);
+    }
 }
