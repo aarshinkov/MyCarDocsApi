@@ -43,7 +43,75 @@ public class PoliciesController {
         List<PolicyEntity> storedPolicies = policyService.getPolicies();
 
         if (storedPolicies.isEmpty()) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        }
+
+        List<PolicyGetResponse> policies = new ArrayList<>();
+
+        for (PolicyEntity policy : storedPolicies) {
+            PolicyGetResponse pgr = getPolicyFromEntity(policy);
+            policies.add(pgr);
+        }
+
+        return new ResponseEntity<>(policies, HttpStatus.OK);
+    }
+
+    @Deprecated
+    @ApiOperation(value = "Get policies by type")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId)")
+    @GetMapping(value = "/api/policies/type", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PolicyGetResponse>> getPoliciesByType(@RequestParam("type") Integer type, @RequestParam("userId") String userId, Principal principal) {
+
+        List<PolicyEntity> storedPolicies = policyService.getPoliciesByType(type, userId);
+
+        if (storedPolicies.isEmpty()) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        }
+
+        List<PolicyGetResponse> policies = new ArrayList<>();
+
+        for (PolicyEntity policy : storedPolicies) {
+            PolicyGetResponse pgr = getPolicyFromEntity(policy);
+            policies.add(pgr);
+        }
+
+        return new ResponseEntity<>(policies, HttpStatus.OK);
+    }
+
+    @Deprecated
+    @ApiOperation(value = "Get policies by status")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId)")
+    @GetMapping(value = "/api/policies/status", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PolicyGetResponse>> getPoliciesByStatus(@RequestParam("status") Integer status, @RequestParam("userId") String userId, Principal principal) {
+
+        List<PolicyEntity> storedPolicies = policyService.getPoliciesByStatus(status, userId);
+
+        if (storedPolicies == null || storedPolicies.isEmpty()) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        }
+
+        List<PolicyGetResponse> policies = new ArrayList<>();
+
+        for (PolicyEntity policy : storedPolicies) {
+            PolicyGetResponse pgr = getPolicyFromEntity(policy);
+            policies.add(pgr);
+        }
+
+        return new ResponseEntity<>(policies, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get policies by criteria")
+    @PreAuthorize("@securityExpressions.isUserSelf(#principal, #userId)")
+    @GetMapping(value = "/api/policies/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PolicyGetResponse>> getPoliciesFiltered(@RequestParam(name = "type", required = false) Integer type,
+            @RequestParam(name = "status", required = true, defaultValue = "-1") Integer status,
+            @RequestParam(name = "carId", required = false) String carId,
+            @RequestParam("userId") String userId, Principal principal) {
+
+        List<PolicyEntity> storedPolicies = policyService.getPoliciesFiltered(type, status, carId, userId);
+
+        if (storedPolicies == null || storedPolicies.isEmpty()) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
         }
 
         List<PolicyGetResponse> policies = new ArrayList<>();
@@ -57,8 +125,9 @@ public class PoliciesController {
     }
 
     @ApiOperation(value = "Get policies by car ID")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfCar(#principal, #carId)")
     @GetMapping(value = "/api/policies/car/id/{carId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PolicyGetResponse>> getPoliciesByCarId(@PathVariable("carId") String carId) {
+    public ResponseEntity<List<PolicyGetResponse>> getPoliciesByCarId(@PathVariable("carId") String carId, Principal principal) {
 
         List<PolicyEntity> storedPolicies = policyService.getPoliciesByCarId(carId);
 
@@ -72,8 +141,9 @@ public class PoliciesController {
     }
 
     @ApiOperation(value = "Get policies by car license plate")
+    @PreAuthorize("@securityExpressions.isUserOwnerOfCarWithLicensePlate(#principal, #licensePlate)")
     @GetMapping(value = "/api/policies/car/plate/{licensePlate}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PolicyGetResponse>> getPoliciesByCarLicensePlate(@PathVariable("licensePlate") String licensePlate) {
+    public ResponseEntity<List<PolicyGetResponse>> getPoliciesByCarLicensePlate(@PathVariable("licensePlate") String licensePlate, Principal principal) {
 
         licensePlate = licensePlate.trim().replaceAll("\\s+", "");
 

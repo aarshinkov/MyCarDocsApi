@@ -22,10 +22,12 @@ public interface PoliciesRepository extends JpaRepository<PolicyEntity, String> 
     List<PolicyEntity> findAllByCarLicensePlateIgnoreCase(String licensePlate);
 
     List<PolicyEntity> findAllByCarOwnerUserIdOrderByStartDate(String userId);
-    
+
     List<PolicyEntity> findAllByCarOwnerUserIdOrderByStartDateDesc(String userId);
 
+    List<PolicyEntity> findAllByTypeAndCarOwnerUserIdOrderByStartDateDesc(Integer type, String userId);
+
     Long countByCarOwnerUserId(String userId);
-    
+
     List<PolicyEntity> findAllByCarOwnerEmail(String email);
 }

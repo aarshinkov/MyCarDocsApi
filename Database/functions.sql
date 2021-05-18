@@ -74,3 +74,57 @@ BEGIN
 	ORDER BY year, month;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Get user policies by criteria
+CREATE OR REPLACE FUNCTION get_user_policies_by_criteria(ip_type IN int, ip_status IN int, ip_car_id IN varchar, ip_user_id IN varchar, mcdCursor OUT refcursor) AS $$
+DECLARE
+	v_now timestamp;
+BEGIN
+	v_now := NOW();
+	IF ip_status = 0 THEN
+		-- status 0  -> active
+		OPEN mcdCursor FOR
+		SELECT p.*
+		FROM policies p
+		JOIN cars c ON p.car_id = c.car_id
+		WHERE v_now >= start_date
+		AND v_now <= end_date
+		AND p.type = COALESCE(ip_type, p.type)
+		AND c.owner = ip_user_id
+		AND c.car_id = COALESCE(ip_car_id, c.car_id)
+		ORDER BY p.end_date DESC, p.start_date DESC;
+	ELSIF ip_status = 1 THEN
+		-- status 1 -> expired
+		OPEN mcdCursor FOR
+		SELECT p.*
+		FROM policies p
+		JOIN cars c ON p.car_id = c.car_id
+		WHERE v_now > end_date
+		AND p.type = COALESCE(ip_type, p.type)
+		AND c.owner = ip_user_id
+		AND c.car_id = COALESCE(ip_car_id, c.car_id)
+		ORDER BY p.end_date DESC, p.start_date DESC;
+	ELSIF ip_status = 2 THEN
+		-- status 2 -> pending
+		OPEN mcdCursor FOR
+		SELECT p.*
+		FROM policies p
+		JOIN cars c ON p.car_id = c.car_id
+		WHERE v_now <= start_date
+		AND p.type = COALESCE(ip_type, p.type)
+		AND c.owner = ip_user_id
+		AND c.car_id = COALESCE(ip_car_id, c.car_id)
+		ORDER BY p.end_date DESC, p.start_date DESC;
+	ELSE
+		-- status -1 -> all
+		OPEN mcdCursor FOR
+		SELECT p.*
+		FROM policies p
+		JOIN cars c ON p.car_id = c.car_id
+		WHERE p.type = COALESCE(ip_type, p.type)
+		AND c.owner = ip_user_id
+		AND c.car_id = COALESCE(ip_car_id, c.car_id)
+		ORDER BY p.end_date DESC, p.start_date DESC;
+	END IF;
+END;
+$$ LANGUAGE plpgsql;

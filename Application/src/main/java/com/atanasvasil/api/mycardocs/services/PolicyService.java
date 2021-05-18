@@ -13,12 +13,18 @@ import java.util.List;
 public interface PolicyService {
 
     List<PolicyEntity> getPolicies();
+    
+    List<PolicyEntity> getPoliciesByType(Integer type, String userId);
 
     List<PolicyEntity> getPoliciesByCarId(String carId);
 
     List<PolicyEntity> getPoliciesByCarLicensePlate(String licensePlate);
 
     List<PolicyEntity> getPoliciesByUserId(String userId);
+    
+    List<PolicyEntity> getPoliciesByStatus(Integer status, String userId);
+    
+    List<PolicyEntity> getPoliciesFiltered(Integer type, Integer status, String carId, String userId);
 
     PolicyEntity getPolicyByPolicyId(String policyId);
 

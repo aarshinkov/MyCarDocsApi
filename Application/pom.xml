@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.atanasvasil.api</groupId>
     <artifactId>my-car-docs</artifactId>
-    <version>1.6.31</version>
+    <version>1.6.51</version>
     <packaging>war</packaging>
     <name>MyCarDocsApi</name>
     <description>RESTful API for MyCarDocs application</description>

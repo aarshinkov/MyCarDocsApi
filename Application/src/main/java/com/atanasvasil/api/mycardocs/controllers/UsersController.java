@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.atanasvasil.api.mycardocs.utils.Utils.getUserFromEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Atanas Yordanov Arshinkov
@@ -114,5 +115,15 @@ public class UsersController {
     public ResponseEntity<Boolean> hasUserCars(@PathVariable("userId") String userId) {
 
         return new ResponseEntity(carService.hasUserCars(userId), HttpStatus.OK);
+    }
+
+    // PASSWORDS
+    @ApiOperation(value = "Forgot password")
+    @GetMapping(value = "/api/users/password/forgot", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> forgotPassword(@RequestParam(name = "email", required = true) String email) {
+        
+        
+        
+        return new ResponseEntity(true, HttpStatus.OK);
     }
 }

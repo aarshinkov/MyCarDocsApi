@@ -1,5 +1,6 @@
 package com.atanasvasil.api.mycardocs.services;
 
+import com.atanasvasil.api.mycardocs.dao.PoliciesDao;
 import com.atanasvasil.api.mycardocs.entities.CarEntity;
 import com.atanasvasil.api.mycardocs.entities.PolicyEntity;
 import com.atanasvasil.api.mycardocs.repositories.CarsRepository;
@@ -23,6 +24,9 @@ import java.util.UUID;
 public class PolicyServiceImpl implements PolicyService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
+    
+    @Autowired
+    private PoliciesDao policiesDao;
 
     @Autowired
     private PoliciesRepository policiesRepository;
@@ -33,6 +37,11 @@ public class PolicyServiceImpl implements PolicyService {
     @Override
     public List<PolicyEntity> getPolicies() {
         return policiesRepository.findAll();
+    }
+
+    @Override
+    public List<PolicyEntity> getPoliciesByType(Integer type, String userId) {
+        return policiesRepository.findAllByTypeAndCarOwnerUserIdOrderByStartDateDesc(type, userId);
     }
 
     @Override
@@ -48,6 +57,16 @@ public class PolicyServiceImpl implements PolicyService {
     @Override
     public List<PolicyEntity> getPoliciesByUserId(String userId) {
         return policiesRepository.findAllByCarOwnerUserIdOrderByStartDateDesc(userId);
+    }
+
+    @Override
+    public List<PolicyEntity> getPoliciesByStatus(Integer status, String userId) {
+        return policiesDao.getPoliciesByStatusForUser(status, userId);
+    }
+    
+    @Override
+    public List<PolicyEntity> getPoliciesFiltered(Integer type, Integer status, String carId, String userId) {
+        return policiesDao.getPoliciesFiltered(type, status, carId, userId);
     }
 
     @Override
@@ -111,7 +130,7 @@ public class PolicyServiceImpl implements PolicyService {
 
     @Override
     public Long getPoliciesCountByUserId(String userId) {
-        
+
         return policiesRepository.countByCarOwnerUserId(userId);
     }
 }
