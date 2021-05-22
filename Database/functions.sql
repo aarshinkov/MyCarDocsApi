@@ -92,7 +92,7 @@ BEGIN
 		AND p.type = COALESCE(ip_type, p.type)
 		AND c.owner = ip_user_id
 		AND c.car_id = COALESCE(ip_car_id, c.car_id)
-		ORDER BY p.end_date DESC, p.start_date DESC;
+		ORDER BY p.end_date ASC, p.start_date DESC;
 	ELSIF ip_status = 1 THEN
 		-- status 1 -> expired
 		OPEN mcdCursor FOR
@@ -103,7 +103,7 @@ BEGIN
 		AND p.type = COALESCE(ip_type, p.type)
 		AND c.owner = ip_user_id
 		AND c.car_id = COALESCE(ip_car_id, c.car_id)
-		ORDER BY p.end_date DESC, p.start_date DESC;
+		ORDER BY p.end_date ASC, p.start_date DESC;
 	ELSIF ip_status = 2 THEN
 		-- status 2 -> pending
 		OPEN mcdCursor FOR
@@ -114,7 +114,7 @@ BEGIN
 		AND p.type = COALESCE(ip_type, p.type)
 		AND c.owner = ip_user_id
 		AND c.car_id = COALESCE(ip_car_id, c.car_id)
-		ORDER BY p.end_date DESC, p.start_date DESC;
+		ORDER BY p.end_date ASC, p.start_date DESC;
 	ELSE
 		-- status -1 -> all
 		OPEN mcdCursor FOR
@@ -124,7 +124,7 @@ BEGIN
 		WHERE p.type = COALESCE(ip_type, p.type)
 		AND c.owner = ip_user_id
 		AND c.car_id = COALESCE(ip_car_id, c.car_id)
-		ORDER BY p.end_date DESC, p.start_date DESC;
+		ORDER BY p.end_date ASC, p.start_date DESC;
 	END IF;
 END;
 $$ LANGUAGE plpgsql;
