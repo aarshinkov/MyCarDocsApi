@@ -1,4 +1,4 @@
-package bg.forcarl.api;
+package bg.forcar.api;
 
 import bg.forcar.api.utils.Identifier;
 import org.junit.Before;
