@@ -1,7 +1,7 @@
 package bg.forcar.api.responses.expenses.service;
 
 import java.io.Serializable;
-import com.atanasvasil.api.mycardocs.responses.cars.*;
+import bg.forcar.api.responses.cars.*;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -65,7 +65,7 @@ public class MailServiceImpl implements MailService {
         builder.append("Hello, user<br>");
         builder.append("You have requested to reset your password.<br>");
 
-        final String url = "http://mycardocs.com/api/password?c=" + code;
+        final String url = "http://forcar.bg/api/password?c=" + code;
         builder.append("<a href=\"").append(url).append("\">").append(url).append("</a>");
         String htmlContent = String.valueOf(builder);
 

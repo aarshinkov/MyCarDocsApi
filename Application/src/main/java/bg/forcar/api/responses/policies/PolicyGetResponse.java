@@ -1,6 +1,6 @@
 package bg.forcar.api.responses.policies;
 
-import com.atanasvasil.api.mycardocs.responses.cars.CarGetResponse;
+import bg.forcar.api.responses.cars.CarGetResponse;
 import lombok.*;
 
 import java.io.Serializable;

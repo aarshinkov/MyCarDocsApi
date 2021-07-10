@@ -1,4 +1,4 @@
-package com.atanasvasil.api.mycardocs;
+package bg.forcarl.api;
 
 import bg.forcar.api.utils.Identifier;
 import org.junit.Before;

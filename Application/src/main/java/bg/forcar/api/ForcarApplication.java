@@ -10,10 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class MyCarDocsApplication {
+public class ForcarApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MyCarDocsApplication.class, args);
+        SpringApplication.run(ForcarApplication.class, args);
     }
 
     /**

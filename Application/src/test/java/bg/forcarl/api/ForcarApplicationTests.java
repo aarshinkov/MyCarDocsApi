@@ -1,13 +1,12 @@
-package com.atanasvasil.api.mycardocs;
+package bg.forcarl.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MyCarDocsApplicationTests {
+class ForcarApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {
+    }
 }
