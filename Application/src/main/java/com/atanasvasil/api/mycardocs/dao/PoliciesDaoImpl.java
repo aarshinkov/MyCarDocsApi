@@ -70,8 +70,10 @@ public class PoliciesDaoImpl implements PoliciesDao {
 
         try (Connection conn = jdbcTemplate.getDataSource().getConnection();
                 CallableStatement cstmt = conn.prepareCall("{? = call get_user_policies_by_criteria(?, ?, ?, ?)}")) {
-            try {
 
+            boolean autoCommit = conn.getAutoCommit();
+            log.debug("Auto commit: " + autoCommit);
+            try {
                 conn.setAutoCommit(false);
 
                 if (type == null) {
@@ -89,7 +91,7 @@ public class PoliciesDaoImpl implements PoliciesDao {
                 if (carId == null) {
                     cstmt.setNull(3, Types.VARCHAR);
                 } else {
-                    if (!carId.isEmpty()) {
+                    if (carId.isEmpty()) {
                         cstmt.setNull(3, Types.VARCHAR);
                     } else {
                         cstmt.setString(3, carId);
@@ -114,7 +116,7 @@ public class PoliciesDaoImpl implements PoliciesDao {
                 conn.rollback();
                 log.error("Error getting policies by status " + status + " for user " + userId, e);
             } finally {
-                conn.setAutoCommit(true);
+                conn.setAutoCommit(autoCommit);
             }
         } catch (Exception ex) {
             log.error("Error getting policies by status " + status + " for user " + userId, ex);

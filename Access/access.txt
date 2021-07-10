@@ -1,0 +1,4 @@
+============================================= Deploy =============================================
+
+cp /home/aarshinkov/Programs/tomcat/webapps/MyCarDocsApiPROD##*.war /home/aarshinkov/Programs/tomcat/archive/
+mv /home/aarshinkov/Programs/tomcat/temp/MyCarDocsApiPROD##*.war /home/aarshinkov/Programs/tomcat/webapps/MyCarDocsApiPROD##`date +%Y_%m_%d_%H_%M_%S`.war

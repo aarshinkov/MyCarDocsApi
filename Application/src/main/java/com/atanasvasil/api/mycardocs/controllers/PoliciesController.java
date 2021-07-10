@@ -108,11 +108,15 @@ public class PoliciesController {
             @RequestParam(name = "carId", required = false) String carId,
             @RequestParam("userId") String userId, Principal principal) {
 
+        log.debug("Policies filter: type - " + type + "; status - " + status + "; carId - " + carId + "; userId - " + userId);
+
         List<PolicyEntity> storedPolicies = policyService.getPoliciesFiltered(type, status, carId, userId);
 
         if (storedPolicies == null || storedPolicies.isEmpty()) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
         }
+
+        log.debug("Policisies found: " + storedPolicies.size());
 
         List<PolicyGetResponse> policies = new ArrayList<>();
 

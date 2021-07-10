@@ -27,5 +27,6 @@ public class UserGetResponse implements Serializable {
     private String lastName;
     private Timestamp createdOn;
     private Timestamp editedOn;
+//    private String resetPassCode;
     private List<RoleGetResponse> roles;
 }

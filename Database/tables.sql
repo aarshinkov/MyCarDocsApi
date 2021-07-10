@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS users(
 	first_name varchar(50) not null,
 	last_name varchar(50) not null,
 	created_on timestamp not null default NOW(),
-	edited_on timestamp
+	edited_on timestamp,
+	reset_pass_code text
 );
 
 CREATE TABLE IF NOT EXISTS roles(
@@ -86,3 +87,32 @@ CREATE TABLE IF NOT EXISTS service_expenses(
 	edited_on timestamp
 );
 
+CREATE TABLE IF NOT EXISTS sys_params(
+	name varchar(300) not null primary key,
+	value varchar(2000) not null,
+	descr varchar(2000)
+);
+
+INSERT INTO sys_params VALUES ('MAIL.HOST', 'smtp.gmail.com', null);
+INSERT INTO sys_params VALUES ('MAIL.PORT', '587', null);
+INSERT INTO sys_params VALUES ('MAIL.PROTOCOL', 'smtp', null);
+INSERT INTO sys_params VALUES ('MAIL.SENDER', 'mycardocsapp@gmail.com', null);
+INSERT INTO sys_params VALUES ('MAIL.USERNAME', 'mycardocsapp@gmail.com', null);
+INSERT INTO sys_params VALUES ('MAIL.PASSWORD', 'ThisIsLynx@9712', null);
+
+-- Mail sequence
+CREATE SEQUENCE IF NOT EXISTS public.s_mails
+	INCREMENT 1
+	START 1;
+	
+ALTER SEQUENCE public.s_mails	
+	OWNER TO bss_user;
+	
+CREATE TABLE IF NOT EXISTS mailbox(
+	mail_id int not null primary key default nextval('s_mails'),
+	sender varchar(250) not null,
+	receivers varchar(2000) not null,
+	subject varchar(300) not null,
+	content text not null,
+	is_sent boolean not null default false
+);

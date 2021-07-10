@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.atanasvasil.api.mycardocs.entities.UserEntity;
+import com.atanasvasil.api.mycardocs.exceptions.MCDException;
 import com.atanasvasil.api.mycardocs.requests.users.*;
 import com.atanasvasil.api.mycardocs.responses.users.UserGetResponse;
 import com.atanasvasil.api.mycardocs.services.CarService;
+import com.atanasvasil.api.mycardocs.services.MailService;
 import com.atanasvasil.api.mycardocs.services.UserService;
 import static com.atanasvasil.api.mycardocs.utils.Roles.USER;
 import io.swagger.annotations.Api;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.atanasvasil.api.mycardocs.utils.Utils.getUserFromEntity;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -38,6 +41,9 @@ public class UsersController {
 
     @Autowired
     private CarService carService;
+
+    @Autowired
+    private MailService mailService;
 
     @ApiOperation(value = "Get users")
     @GetMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -121,9 +127,25 @@ public class UsersController {
     @ApiOperation(value = "Forgot password")
     @GetMapping(value = "/api/users/password/forgot", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> forgotPassword(@RequestParam(name = "email", required = true) String email) {
-        
-        
-        
-        return new ResponseEntity(true, HttpStatus.OK);
+
+        if (!userService.doUserExist(email)) {
+            throw new MCDException(700, "User not found", "User with email " + email + " not found!", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            userService.forgotPassword(email);
+            return new ResponseEntity(true, HttpStatus.OK);
+        } catch (MCDException e) {
+            return new ResponseEntity(false, HttpStatus.CONFLICT);
+        }
+    }
+
+    @ApiOperation(value = "Reset password")
+    @PostMapping(value = "/api/users/password/reset", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> resetPassword(@RequestParam(name = "password") String password, @RequestParam(name = "code") String code) {
+
+        boolean result = userService.resetPassword(password, code);
+
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 }

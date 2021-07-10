@@ -62,6 +62,9 @@ public class UserEntity implements Serializable, UserDetails {
     @Column(name = "edited_on")
     private Timestamp editedOn;
     
+    @Column(name = "reset_pass_code")
+    private String resetPassCode;
+    
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role"))
     private List<RoleEntity> roles;

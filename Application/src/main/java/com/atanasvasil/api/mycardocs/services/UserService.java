@@ -1,6 +1,7 @@
 package com.atanasvasil.api.mycardocs.services;
 
 import com.atanasvasil.api.mycardocs.entities.*;
+import com.atanasvasil.api.mycardocs.exceptions.MCDException;
 import com.atanasvasil.api.mycardocs.requests.users.RoleAssignRequest;
 import com.atanasvasil.api.mycardocs.requests.users.UserCreateRequest;
 import java.util.List;
@@ -24,4 +25,8 @@ public interface UserService extends UserDetailsService {
     void deleteUser(UserEntity user) throws Exception;
 
     Boolean doUserExist(String identifier);
+    
+    Boolean forgotPassword(String email) throws MCDException;
+
+    Boolean resetPassword(String password, String code);
 }

@@ -1,5 +1,6 @@
 package com.atanasvasil.api.mycardocs;
 
+import com.atanasvasil.api.mycardocs.beans.ConfigurationBean;
 import com.atanasvasil.api.mycardocs.beans.RandomBuilder;
 import com.atanasvasil.api.mycardocs.security.*;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +29,11 @@ public class MyCarDocsApplication {
     @Bean
     public RandomBuilder randomBuilder() {
         return new RandomBuilder();
+    }
+
+    @Bean
+    public ConfigurationBean configurationBean() {
+        return new ConfigurationBean();
     }
 
     @Bean

@@ -14,8 +14,12 @@ public interface UsersRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByUserId(String userId);
 
     UserEntity findByEmail(String email);
+    
+    UserEntity findByResetPassCode(String resetPassCode);
 
     boolean existsByEmail(String email);
 
     boolean existsByUserId(String userId);
+    
+    boolean existsByResetPassCode(String resetPassCode);
 }

@@ -87,8 +87,8 @@ BEGIN
 		SELECT p.*
 		FROM policies p
 		JOIN cars c ON p.car_id = c.car_id
-		WHERE v_now >= start_date
-		AND v_now <= end_date
+		WHERE v_now >= p.start_date
+		AND v_now <= p.end_date
 		AND p.type = COALESCE(ip_type, p.type)
 		AND c.owner = ip_user_id
 		AND c.car_id = COALESCE(ip_car_id, c.car_id)
@@ -99,7 +99,7 @@ BEGIN
 		SELECT p.*
 		FROM policies p
 		JOIN cars c ON p.car_id = c.car_id
-		WHERE v_now > end_date
+		WHERE v_now > p.end_date
 		AND p.type = COALESCE(ip_type, p.type)
 		AND c.owner = ip_user_id
 		AND c.car_id = COALESCE(ip_car_id, c.car_id)
@@ -110,7 +110,7 @@ BEGIN
 		SELECT p.*
 		FROM policies p
 		JOIN cars c ON p.car_id = c.car_id
-		WHERE v_now <= start_date
+		WHERE v_now <= p.start_date
 		AND p.type = COALESCE(ip_type, p.type)
 		AND c.owner = ip_user_id
 		AND c.car_id = COALESCE(ip_car_id, c.car_id)

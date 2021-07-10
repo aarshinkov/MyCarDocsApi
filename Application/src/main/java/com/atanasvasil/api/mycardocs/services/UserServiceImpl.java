@@ -1,6 +1,7 @@
 package com.atanasvasil.api.mycardocs.services;
 
 import com.atanasvasil.api.mycardocs.entities.*;
+import com.atanasvasil.api.mycardocs.exceptions.MCDException;
 import com.atanasvasil.api.mycardocs.repositories.RolesRepository;
 import com.atanasvasil.api.mycardocs.repositories.UsersRepository;
 import com.atanasvasil.api.mycardocs.requests.users.*;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -32,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MailService mailService;
 
     @Override
     public List<UserEntity> getUsers() {
@@ -103,6 +109,47 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean forgotPassword(String email) throws MCDException {
+
+        String code;
+
+        do {
+            code = UUID.randomUUID().toString();
+        } while (usersRepository.existsByResetPassCode(code));
+
+        UserEntity user = usersRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new MCDException(700, "User not found", "User with email " + email + " not found!", HttpStatus.NOT_FOUND);
+        }
+
+        user.setResetPassCode(code);
+        usersRepository.save(user);
+
+        mailService.sendResetPasswordMail(email, code);
+
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean resetPassword(String password, String code) {
+
+        UserEntity user = usersRepository.findByResetPassCode(code);
+
+        if (user == null) {
+            throw new MCDException(700, "User not found", "User with reset password code " + code + " not found!", HttpStatus.NOT_FOUND);
+        }
+
+        user.setPassword(passwordEncoder.encode(password));
+        user.setResetPassCode(null);
+        usersRepository.save(user);
+
+        return true;
     }
 
     @Override
