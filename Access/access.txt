@@ -1,4 +1,4 @@
 ============================================= Deploy =============================================
 
-cp /home/aarshinkov/Programs/tomcat/webapps/MyCarDocsApiPROD##*.war /home/aarshinkov/Programs/tomcat/archive/
-mv /home/aarshinkov/Programs/tomcat/temp/MyCarDocsApiPROD##*.war /home/aarshinkov/Programs/tomcat/webapps/MyCarDocsApiPROD##`date +%Y_%m_%d_%H_%M_%S`.war
+cp /home/aarshinkov/Programs/tomcat/webapps/ForcarApiPROD##*.war /home/aarshinkov/Programs/tomcat/archive/
+mv /home/aarshinkov/Programs/tomcat/temp/ForcarApiPROD##*.war /home/aarshinkov/Programs/tomcat/webapps/ForcarApiPROD##`date +%Y_%m_%d_%H_%M_%S`.war

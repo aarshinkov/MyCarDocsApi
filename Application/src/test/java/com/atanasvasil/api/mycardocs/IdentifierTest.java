@@ -1,6 +1,6 @@
 package com.atanasvasil.api.mycardocs;
 
-import com.atanasvasil.api.mycardocs.utils.Identifier;
+import bg.forcar.api.utils.Identifier;
 import org.junit.Before;
 import org.junit.Test;
 

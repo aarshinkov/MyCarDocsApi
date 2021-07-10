@@ -8,12 +8,12 @@
         <version>2.4.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.atanasvasil.api</groupId>
-    <artifactId>my-car-docs</artifactId>
-    <version>1.7.00</version>
+    <groupId>bg.forcar.api</groupId>
+    <artifactId>forcar</artifactId>
+    <version>1.8.00</version>
     <packaging>war</packaging>
-    <name>MyCarDocsApi</name>
-    <description>RESTful API for MyCarDocs application</description>
+    <name>ForcarApi</name>
+    <description>RESTful API for Forcar application</description>
     
     <properties>
         <java.version>1.8</java.version>
